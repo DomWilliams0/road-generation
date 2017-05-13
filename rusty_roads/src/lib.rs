@@ -1,19 +1,37 @@
-pub struct RoadError {
-
+#[derive(Debug)]
+pub enum RoadError {
+    Settings(&'static str)
 }
 
 
-// TODO builder pattern
-pub struct Settings {
-  pub width: i32,
-  pub height: i32
+pub struct RoadmapBuilder {
+    width: i32,
+    height: i32
 }
 
-pub struct Roadmap {
+impl RoadmapBuilder {
+
+    pub fn new() -> RoadmapBuilder {
+        RoadmapBuilder {
+            width: 256,
+            height: 256
+        }
+    }
+
+    pub fn size<'a>(&'a mut self, w: i32, h: i32) -> &'a mut RoadmapBuilder {
+        self.width = w;
+        self.height = h;
+        self
+    }
+
+    pub fn generate(&self) -> Result<RoadMap, RoadError> {
+        Err(RoadError::Settings("Not implemented"))
+    }
+
 
 }
 
-// placeholder
-pub fn generate(settings: &Settings) -> Roadmap {
-  Roadmap {}
+#[derive(Debug)]
+pub struct RoadMap {
+
 }

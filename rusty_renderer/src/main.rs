@@ -1,10 +1,8 @@
 extern crate rusty_roads;
 
 fn main() {
-  let s = rusty_roads::Settings {
-    width: 960,
-    height: 600,
-  };
 
-  let r = rusty_roads::generate(&s);
+    let r = rusty_roads::RoadmapBuilder::new().size(600, 960).generate();
+
+    println!("Generated {:?}", r);
 }
