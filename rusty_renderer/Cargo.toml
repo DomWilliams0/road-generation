@@ -1,0 +1,7 @@
+[package]
+name = "rusty_renderer"
+version = "0.1.0"
+authors = ["Dom Williams <me@domwillia.ms>"]
+
+[dependencies]
+rusty_roads = {path = "../rusty_roads"}
