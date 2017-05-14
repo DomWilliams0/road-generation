@@ -1,13 +1,15 @@
 extern crate rusty_roads;
 extern crate piston_window;
 
-use rusty_roads::{RoadError, RoadMap};
 use std::process;
+use std::env;
+use rusty_roads::{RoadError, RoadMap};
 use piston_window::*;
 
 fn main() {
+  let render = env::args().nth(1).map(|x| x != "no-render");
 
-    match run() {
+    match run(render.unwrap_or(true)) {
         Err(err) => {
             println!("Error: {:?}", err);
             process::exit(1);
@@ -18,13 +20,17 @@ fn main() {
 
 }
 
-fn run() -> Result<(), RoadError> {
+fn run(do_render: bool) -> Result<(), RoadError> {
 
     let roadmap = rusty_roads::RoadmapBuilder::new()
         .size(960, 600)
         .generate()?;
 
-    render(&roadmap)
+        if do_render {
+          render(&roadmap)
+        } else {
+          Ok(())
+        }
 }
 
 fn render_roadmap(c: &Context, g: &mut G2d, roadmap: &RoadMap) {
