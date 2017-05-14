@@ -8,8 +8,8 @@ pub struct RoadMap {
 }
 
 #[derive(Debug, Copy, Clone, PartialEq)]
-struct Point {
-    pos: [f64; 2],
+pub struct Point {
+    pub pos: [f64; 2],
 }
 
 #[derive(Debug)]
@@ -56,6 +56,10 @@ impl Road {
         self.to = Some(point);
         self
     }
+
+    pub fn points(&self) -> (Option<Point>, Option<Point>) {
+      (self.from, self.to)
+    }
 }
 
 
@@ -84,7 +88,7 @@ impl RoadMap {
     }
 
     pub fn roads(&self) -> &Vec<Road> {
-      &self.roads
+        &self.roads
     }
 
     fn new(frontier: Vec<Road>) -> RoadMap {
