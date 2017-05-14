@@ -28,13 +28,26 @@ fn run() -> Result<(), RoadError> {
 }
 
 fn render_roadmap(c: &Context, g: &mut G2d, roadmap: &RoadMap) {
+    const RADIUS: f64 = 8.;
+
     let roads = roadmap.roads();
     for road in roads.iter() {
 
         if let (Some(from), Some(to)) = road.points() {
+            for point in [from, to].iter() {
+                ellipse([0.2, 0.7, 0.5, 1.],
+                        [point.x() - RADIUS / 2.,
+                         point.y() - RADIUS / 2.,
+                         RADIUS,
+                         RADIUS],
+                        c.transform,
+                        g)
+            }
+
+
             line([0., 0., 0., 1.],
                  2.,
-                 [from.pos[0], from.pos[1], to.pos[0], to.pos[1]],
+                 [from.x(), from.y(), to.x(), to.y()],
                  c.transform,
                  g);
 

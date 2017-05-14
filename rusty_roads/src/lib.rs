@@ -19,7 +19,7 @@ pub struct RoadmapSettings {
     height: i32,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub enum RoadType {
     Small,
     Medium,
