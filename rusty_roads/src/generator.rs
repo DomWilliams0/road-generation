@@ -126,6 +126,14 @@ impl RoadMap {
         &self.roads
     }
 
+    pub fn width(&self) -> i32 {
+        self.width
+    }
+
+    pub fn height(&self) -> i32 {
+        self.height
+    }
+
     fn new(settings: &RoadmapSettings, frontier: Vec<Road>) -> RoadMap {
         let mut frontier_points = frontier
             .iter()
@@ -216,7 +224,7 @@ impl RoadMap {
 
             // other end of self
             if nearest == road.from.unwrap() {
-              return false;
+                return false;
             }
 
             // merge with the new closest

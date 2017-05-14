@@ -21,7 +21,7 @@ fn main() {
 fn run() -> Result<(), RoadError> {
 
     let roadmap = rusty_roads::RoadmapBuilder::new()
-        .size(600, 960)
+        .size(960, 600)
         .generate()?;
 
     render(&roadmap)
@@ -29,6 +29,11 @@ fn run() -> Result<(), RoadError> {
 
 fn render_roadmap(c: &Context, g: &mut G2d, roadmap: &RoadMap) {
     const RADIUS: f64 = 8.;
+
+    rectangle([0.7, 0.7, 0.7, 1.],
+              [0., 0., roadmap.width() as f64, roadmap.height() as f64],
+              c.transform,
+              g);
 
     let roads = roadmap.roads();
     for road in roads.iter() {
