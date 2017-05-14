@@ -1,4 +1,4 @@
-use super::{RoadError, RoadType};
+use super::{RoadError, RoadType, RoadmapSettings};
 use kdtree::kdtree::*;
 
 pub struct RoadMap {
@@ -64,22 +64,21 @@ fn create_frontier() -> Vec<Road> {
 }
 
 impl RoadMap {
-    pub fn generate(width: i32, height: i32) -> Result<RoadMap, RoadError> {
+    pub fn generate(settings: &RoadmapSettings) -> Result<RoadMap, RoadError> {
 
         let mut frontier = create_frontier();
-        let mut frontier_points = frontier.iter()
-        .fold(Vec::with_capacity(frontier.len() * 2),
-          |mut acc, ref road| {
-            road.from.map_or((), |p| acc.push(p));
-            road.to.map_or((), |p| acc.push(p));
-            acc
-          });
+        let mut frontier_points = frontier
+            .iter()
+            .fold(Vec::with_capacity(frontier.len() * 2),
+                  |mut acc, ref road| {
+                      road.from.map_or((), |p| acc.push(p));
+                      road.to.map_or((), |p| acc.push(p));
+                      acc
+                  });
 
         let roadmap = RoadMap { kdtree: Kdtree::new(&mut frontier_points) };
 
-        while let Some(_point) = frontier.pop() {
-
-        }
+        while let Some(_point) = frontier.pop() {}
 
 
         Ok(roadmap)
