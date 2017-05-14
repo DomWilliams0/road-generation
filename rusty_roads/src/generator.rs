@@ -3,7 +3,8 @@ use kdtree::kdtree::*;
 
 pub struct RoadMap {
     kdtree: Kdtree<Point>,
-    // no graph
+    roads: Vec<Road>,
+    frontier: Vec<Road>,
 }
 
 #[derive(Debug, Copy, Clone, PartialEq)]
@@ -12,7 +13,7 @@ struct Point {
 }
 
 #[derive(Debug)]
-struct Road {
+pub struct Road {
     from: Option<Point>,
     to: Option<Point>,
     road_type: RoadType,
@@ -25,8 +26,15 @@ impl Point {
 }
 
 impl KdtreePointTrait for Point {
+    #[inline]
     fn dims(&self) -> &[f64] {
         &self.pos
+    }
+}
+
+impl From<[f64; 2]> for Point {
+    fn from(dims: [f64; 2]) -> Point {
+        Point { pos: dims }
     }
 }
 
@@ -66,7 +74,20 @@ fn create_frontier() -> Vec<Road> {
 impl RoadMap {
     pub fn generate(settings: &RoadmapSettings) -> Result<RoadMap, RoadError> {
 
-        let mut frontier = create_frontier();
+        let frontier = create_frontier();
+        let mut roadmap = RoadMap::new(frontier);
+        match roadmap.generate_roads(settings) {
+            Ok(_) => Ok(roadmap),
+            Err(e) => Err(e),
+        }
+
+    }
+
+    pub fn roads(&self) -> &Vec<Road> {
+      &self.roads
+    }
+
+    fn new(frontier: Vec<Road>) -> RoadMap {
         let mut frontier_points = frontier
             .iter()
             .fold(Vec::with_capacity(frontier.len() * 2),
@@ -76,11 +97,50 @@ impl RoadMap {
                       acc
                   });
 
-        let roadmap = RoadMap { kdtree: Kdtree::new(&mut frontier_points) };
+        RoadMap {
+            frontier: frontier,
+            roads: Vec::new(),
+            kdtree: Kdtree::new(&mut frontier_points),
+        }
+    }
 
-        while let Some(_point) = frontier.pop() {}
+    fn generate_roads(&mut self, settings: &RoadmapSettings) -> Result<(), RoadError> {
+        while let Some(mut road) = self.frontier.pop() {
+
+            if !self.accept_local_constraints(&mut road) {
+                continue;
+            }
+
+            // tweaked out of range
+            if !self.is_in_range(&road) {
+                continue;
+            }
+
+            // add to world
+            self.add_road(road);
+        }
 
 
-        Ok(roadmap)
+
+        Ok(())
+    }
+
+    fn add_road(&mut self, road: Road) {
+
+        let a = road.from.unwrap().pos;
+        let b = road.to.unwrap().pos;
+
+        self.kdtree.insert_node(Point::from(a));
+        self.kdtree.insert_node(Point::from(b));
+
+        self.roads.push(road);
+    }
+
+    fn is_in_range(&self, road: &Road) -> bool {
+        true
+    }
+
+    fn accept_local_constraints(&self, road: &mut Road) -> bool {
+        true
     }
 }
