@@ -5,3 +5,4 @@ authors = ["Dom Williams <me@domwillia.ms>"]
 
 [dependencies]
 ncollide = "*"
+fux_kdtree = "*"

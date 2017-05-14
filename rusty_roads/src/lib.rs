@@ -1,20 +1,32 @@
+extern crate kdtree;
+
+pub mod generator;
+pub use generator::RoadMap;
+
+
 #[derive(Debug)]
 pub enum RoadError {
-    Settings(&'static str)
+    Settings(&'static str),
 }
 
 
 pub struct RoadmapBuilder {
     width: i32,
-    height: i32
+    height: i32,
+}
+
+#[derive(Debug)]
+pub enum RoadType {
+    Small,
+    Medium,
+    Large,
 }
 
 impl RoadmapBuilder {
-
     pub fn new() -> RoadmapBuilder {
         RoadmapBuilder {
             width: 256,
-            height: 256
+            height: 256,
         }
     }
 
@@ -25,13 +37,7 @@ impl RoadmapBuilder {
     }
 
     pub fn generate(&self) -> Result<RoadMap, RoadError> {
-        Err(RoadError::Settings("Not implemented"))
+        // TODO fix builder pattern
+        RoadMap::generate(self.width, self.height)
     }
-
-
-}
-
-#[derive(Debug)]
-pub struct RoadMap {
-
 }

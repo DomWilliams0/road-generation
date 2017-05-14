@@ -2,6 +2,7 @@
 name = "rusty_roads"
 version = "0.1.0"
 dependencies = [
+ "fux_kdtree 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "ncollide 0.12.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -18,6 +19,11 @@ dependencies = [
 [[package]]
 name = "approx"
 version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "fux_kdtree"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -178,6 +184,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [metadata]
 "checksum alga 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)" = "ac1e4aec8a55e9150c6941e3c1059272b8e607c0503f9b61ca12289e56efb87b"
 "checksum approx 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "08abcc3b4e9339e33a3d0a5ed15d84a687350c05689d825e0f6655eef9e76a94"
+"checksum fux_kdtree 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "216bf8256834a87394bf0364f82a92444ee8a00c757630a02a2bf278456f74e7"
 "checksum generic-array 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "3406a3975bc944fdd85b7964d53296a0ff11f4b6c4704fa4972c9a7c8ba27367"
 "checksum libc 0.2.22 (registry+https://github.com/rust-lang/crates.io-index)" = "babb8281da88cba992fa1f4ddec7d63ed96280a1a53ec9b919fd37b53d71e502"
 "checksum nalgebra 0.12.2 (registry+https://github.com/rust-lang/crates.io-index)" = "e05fd3b0cbb3b765cf760083f22ee5ea1419e097473d318919bb8a5e94d3267c"
