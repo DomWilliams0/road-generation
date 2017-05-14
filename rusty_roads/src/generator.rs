@@ -58,7 +58,7 @@ impl Road {
     }
 
     pub fn points(&self) -> (Option<Point>, Option<Point>) {
-      (self.from, self.to)
+        (self.from, self.to)
     }
 }
 
@@ -74,9 +74,21 @@ fn create_frontier() -> Vec<Road> {
 
     vec
 }
+fn validate_settings(settings: &RoadmapSettings) -> Result<(), RoadError> {
+    if settings.width < 50 {
+        return Err(RoadError::Settings("Width must be at least 50"));
+    }
+    if settings.height < 50 {
+        return Err(RoadError::Settings("Height must be at least 50"));
+    }
+
+    Ok(())
+}
+
 
 impl RoadMap {
     pub fn generate(settings: &RoadmapSettings) -> Result<RoadMap, RoadError> {
+        validate_settings(settings)?;
 
         let frontier = create_frontier();
         let mut roadmap = RoadMap::new(frontier);
