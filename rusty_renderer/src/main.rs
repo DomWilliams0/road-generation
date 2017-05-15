@@ -7,7 +7,7 @@ use rusty_roads::{RoadError, RoadMap};
 use piston_window::*;
 
 fn main() {
-  let render = env::args().nth(1).map(|x| x != "no-render");
+    let render = env::args().nth(1).map(|x| x != "no-render");
 
     match run(render.unwrap_or(true)) {
         Err(err) => {
@@ -22,15 +22,17 @@ fn main() {
 
 fn run(do_render: bool) -> Result<(), RoadError> {
 
+    println!("Generating roadmap...");
     let roadmap = rusty_roads::RoadmapBuilder::new()
         .size(960, 600)
         .generate()?;
 
-        if do_render {
-          render(&roadmap)
-        } else {
-          Ok(())
-        }
+    if do_render {
+        println!("Rendering...");
+        render(&roadmap)
+    } else {
+        Ok(())
+    }
 }
 
 fn render_roadmap(c: &Context, g: &mut G2d, roadmap: &RoadMap) {

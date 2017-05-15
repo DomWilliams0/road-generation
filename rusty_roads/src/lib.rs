@@ -1,8 +1,10 @@
 extern crate kdtree;
+extern crate rand;
+extern crate cgmath;
 
 pub mod generator;
 pub use generator::RoadMap;
-
+mod rules;
 
 #[derive(Debug)]
 pub enum RoadError {

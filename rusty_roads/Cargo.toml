@@ -6,3 +6,5 @@ authors = ["Dom Williams <me@domwillia.ms>"]
 [dependencies]
 ncollide = "*"
 fux_kdtree = "*"
+rand = "0.3"
+cgmath = "0.14.1"
