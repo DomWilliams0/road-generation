@@ -213,8 +213,8 @@ impl RoadMap {
         let from = road.from.unwrap_or(Point::out_of_range());
         let to = road.to.unwrap_or(Point::out_of_range());
 
-        let w = self.width as f64;
-        let h = self.height as f64;
+        let w = (self.width + 1) as f64;
+        let h = (self.height + 1) as f64;
 
         from.pos[0] >= 0. && from.pos[0] < w && from.pos[1] >= 0. && from.pos[1] < h &&
         to.pos[0] >= 0. && to.pos[0] < w && to.pos[1] >= 0. && to.pos[1] < h
