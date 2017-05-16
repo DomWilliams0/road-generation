@@ -1,40 +1,14 @@
-use super::RoadType;
+use super::super::RoadType; // oof
 use generator::{Road, Point};
 use rand::{Rng, thread_rng, random, Closed01};
-use std::f64;
 use std::f64::consts::PI;
 use cgmath::{Vector2, Point2, Rad};
 use cgmath::prelude::*;
 
-pub enum GenerationRule {
-    Grid,
-    Radial,
-    Organic,
-}
-
-pub fn propose_roads(road: &Road, out: &mut Vec<Road>) {
-
-    let from = Point2::from(road.from().unwrap().pos);
-    let to = Point2::from(road.to().unwrap().pos);
-    let vec = (to - from).normalize();
-
-    match get_rule(road.to().as_ref().unwrap()) {
-        GenerationRule::Grid => generate_grid(&to, &vec, road.road_type(), out),
-        _ => {}
-        // GenerationRule::Organic => generate_organic(road, out),
-        // GenerationRule::Radial => generate_radial(road, out),
-    }
-}
-
-fn get_rule(point: &Point) -> GenerationRule {
-    // TODO
-    GenerationRule::Grid
-}
-
-fn generate_grid(point: &Point2<f64>,
-                 direction: &Vector2<f64>,
-                 road_type: RoadType,
-                 out: &mut Vec<Road>) {
+pub fn propose_branching_roads(point: &Point2<f64>,
+                               direction: &Vector2<f64>,
+                               road_type: RoadType,
+                               out: &mut Vec<Road>) {
     const ROAD_CHANCE: f64 = 0.8;
     const ROAD_LENGTH: f64 = 20.;
     const GRID_ANGLES: [f64; 3] = [-PI / 2., 0., PI / 2.];
@@ -62,7 +36,3 @@ fn generate_grid(point: &Point2<f64>,
     }
 
 }
-
-fn generate_organic(road: &Road, out: &mut Vec<Road>) {}
-
-fn generate_radial(road: &Road, out: &mut Vec<Road>) {}
