@@ -16,6 +16,7 @@ pub struct RoadmapBuilder {
     pub settings: RoadmapSettings,
 }
 
+#[derive(Clone)]
 pub struct RoadmapSettings {
     width: i32,
     height: i32,
@@ -45,6 +46,6 @@ impl RoadmapBuilder {
     }
 
     pub fn generate(&self) -> Result<RoadMap, RoadError> {
-        RoadMap::generate(&self.settings)
+        RoadMap::generate(self.settings.clone())
     }
 }

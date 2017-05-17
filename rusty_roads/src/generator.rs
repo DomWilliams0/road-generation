@@ -3,12 +3,12 @@ use kdtree::kdtree::*;
 use rules;
 use rand::{thread_rng, Rng};
 
-pub struct RoadMap<'a> {
+pub struct RoadMap {
     kdtree: Kdtree<Point>,
     roads: Vec<Road>,
     frontier: Vec<Road>,
 
-    settings: &'a RoadmapSettings
+    settings: RoadmapSettings
 }
 
 #[derive(Debug, Copy, Clone, PartialEq)]
@@ -135,9 +135,9 @@ fn validate_settings(settings: &RoadmapSettings) -> Result<(), RoadError> {
 }
 
 
-impl <'a>RoadMap<'a> {
-    pub fn generate(settings: &'a RoadmapSettings) -> Result<RoadMap, RoadError> {
-        validate_settings(settings)?;
+impl RoadMap {
+    pub fn generate(settings: RoadmapSettings) -> Result<RoadMap, RoadError> {
+        validate_settings(&settings)?;
 
         let frontier = create_frontier();
         let mut roadmap = RoadMap::new(settings, frontier);
@@ -160,7 +160,7 @@ impl <'a>RoadMap<'a> {
         self.settings.height
     }
 
-    fn new(settings: &RoadmapSettings, frontier: Vec<Road>) -> RoadMap {
+    fn new(settings: RoadmapSettings, frontier: Vec<Road>) -> RoadMap {
         let mut frontier_points = frontier
             .iter()
             .fold(Vec::with_capacity(frontier.len() * 2),
