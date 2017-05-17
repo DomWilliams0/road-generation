@@ -75,7 +75,7 @@ impl Road {
         }
     }
 
-    fn set_from(&mut self, point: Point) {
+    fn _set_from(&mut self, point: Point) {
         self.from = Some(point);
     }
 

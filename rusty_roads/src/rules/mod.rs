@@ -1,6 +1,6 @@
 use super::RoadType;
 use generator::{Road, Point};
-use cgmath::{Vector2, Point2, Rad};
+use cgmath::{Vector2, Point2};
 use cgmath::prelude::*;
 
 mod grid;
@@ -8,7 +8,7 @@ mod organic;
 
 enum GenerationRule {
     Grid,
-    Radial,
+    // Radial,
     Organic,
 }
 
@@ -38,6 +38,6 @@ fn get_generator(rule: GenerationRule) -> Option<Proposal> {
     match rule {
         GenerationRule::Grid => Some(grid::propose_branching_roads),
         GenerationRule::Organic => Some(organic::propose_branching_roads),
-        _ => None,
+        // _ => None,
     }
 }
