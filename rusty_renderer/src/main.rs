@@ -24,18 +24,55 @@ fn main() {
 
 }
 
-fn run(do_render: bool) -> Result<(), RoadError> {
-
+fn generate() -> Result<RoadMap, RoadError> {
     println!("Generating roadmap...");
-    let mut settings = rusty_roads::RoadmapBuilder::new();
-    let roadmap = settings.size(960, 600).generate()?;
+    rusty_roads::RoadmapBuilder::new()
+        .size(960, 600)
+        .increment(Some(4))
+        .create()
+}
 
-    if do_render {
-        println!("Rendering...");
-        render(&roadmap)
-    } else {
-        Ok(())
+fn run(_do_render: bool) -> Result<(), RoadError> {
+
+    // TODO no rendering
+    // if !do_render {
+    //     let _roadmap = generate()?;
+    //     return Ok(());
+    // }
+
+    let mut window = RenderWindow::new(VideoMode::new(960, 600, 32),
+                                       "Roads",
+                                       style::CLOSE,
+                                       &ContextSettings::default())
+            .unwrap();
+
+    let mut running = true;
+    let mut roadmap = generate()?;
+    while running {
+        for event in window.events() {
+            match event {
+                Event::Closed => running = false,
+                Event::KeyPressed { code, .. } => {
+                    match code {
+                        Key::Escape => running = false,
+                        Key::Space => roadmap = generate()?,
+                        _ => (),
+                    }
+                }
+                _ => (),
+            }
+        }
+
+        window.clear(&Color::white());
+
+        roadmap.advance();
+        render_roadmap(&mut window, &roadmap);
+        window.display();
     }
+
+    Ok(())
+
+
 }
 
 // convenience
@@ -82,35 +119,4 @@ fn render_roadmap(window: &mut RenderWindow, roadmap: &RoadMap) {
             window.draw_primitives(&line, PrimitiveType::Lines, RenderStates::default());
         }
     }
-
-}
-
-fn render(roadmap: &RoadMap) -> Result<(), RoadError> {
-    let mut window = RenderWindow::new(VideoMode::new(960, 600, 32),
-                                       "Roads",
-                                       style::CLOSE,
-                                       &ContextSettings::default())
-            .unwrap();
-
-    let mut running = true;
-    while running {
-        for event in window.events() {
-            match event {
-                Event::Closed => running = false,
-                Event::KeyPressed { code, .. } => {
-                    match code {
-                        Key::Escape => running = false,
-                        Key::Space => (), // TODO regenerate
-                        _ => (),
-                    }
-                }
-                _ => (),
-            }
-        }
-        window.clear(&Color::white());
-        render_roadmap(&mut window, roadmap);
-        window.display();
-    }
-
-    Ok(())
 }

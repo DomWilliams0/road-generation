@@ -20,6 +20,7 @@ pub struct RoadmapBuilder {
 pub struct RoadmapSettings {
     width: i32,
     height: i32,
+    increment: Option<i32>,
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -35,6 +36,7 @@ impl RoadmapBuilder {
             settings: RoadmapSettings {
                 width: 256,
                 height: 256,
+                increment: None,
             },
         }
     }
@@ -45,7 +47,13 @@ impl RoadmapBuilder {
         self
     }
 
-    pub fn generate(&self) -> Result<RoadMap, RoadError> {
-        RoadMap::generate(self.settings.clone())
+    pub fn increment<'a>(&'a mut self, increment: Option<i32>) -> &'a mut RoadmapBuilder {
+        self.settings.increment = increment;
+        self
+    }
+
+
+    pub fn create(&self) -> Result<RoadMap, RoadError> {
+        RoadMap::create(self.settings.clone())
     }
 }

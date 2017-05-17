@@ -8,7 +8,7 @@ pub struct RoadMap {
     roads: Vec<Road>,
     frontier: Vec<Road>,
 
-    settings: RoadmapSettings
+    settings: RoadmapSettings,
 }
 
 #[derive(Debug, Copy, Clone, PartialEq)]
@@ -136,15 +136,11 @@ fn validate_settings(settings: &RoadmapSettings) -> Result<(), RoadError> {
 
 
 impl RoadMap {
-    pub fn generate(settings: RoadmapSettings) -> Result<RoadMap, RoadError> {
+    pub fn create(settings: RoadmapSettings) -> Result<RoadMap, RoadError> {
         validate_settings(&settings)?;
 
         let frontier = create_frontier();
-        let mut roadmap = RoadMap::new(settings, frontier);
-        match roadmap.generate_roads() {
-            Ok(_) => Ok(roadmap),
-            Err(e) => Err(e),
-        }
+        Ok(RoadMap::new(settings, frontier))
 
     }
 
@@ -180,8 +176,23 @@ impl RoadMap {
         }
     }
 
-    fn generate_roads(&mut self) -> Result<(), RoadError> {
-        while let Some(mut road) = self.frontier.pop() {
+    pub fn advance(&mut self) -> Result<(), RoadError> {
+        // TODO use Option properly dammit
+        let counting = self.settings.increment.is_some();
+        let mut count = self.settings.increment.unwrap_or(1);
+
+        while count > 0 {
+            if counting {
+                count -= 1;
+            }
+
+
+            let popped = self.frontier.pop();
+            if popped.is_none() {
+                break;
+            }
+
+            let mut road = popped.unwrap();
 
             let (accepted, did_merge) = self.accept_local_constraints(&mut road);
             if !accepted {
@@ -204,8 +215,6 @@ impl RoadMap {
             // add self to world
             self.add_road(road);
         }
-
-
 
         Ok(())
     }

@@ -27,7 +27,8 @@ pub fn propose_roads(road: &Road, branch: bool, out: &mut Vec<Road>) {
 }
 
 fn get_rule(point: &Point) -> GenerationRule {
-    if point.x() < 400.0 || point.x() > 600.0 { // arbitrary nonsense
+    if point.x() < 400.0 || point.x() > 600.0 {
+        // arbitrary nonsense
         GenerationRule::Grid
     } else {
         GenerationRule::Organic
