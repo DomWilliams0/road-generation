@@ -1,6 +1,7 @@
 use super::{RoadError, RoadType, RoadmapSettings};
 use kdtree::kdtree::*;
 use rules;
+use rand::{thread_rng, Rng};
 
 pub struct RoadMap {
     kdtree: Kdtree<Point>,
@@ -22,6 +23,7 @@ pub struct Road {
     from: Option<Point>,
     to: Option<Point>,
     road_type: RoadType,
+    fuel: u32,
 }
 
 impl Point {
@@ -63,6 +65,7 @@ impl Road {
             road_type: road_type,
             from: Some(from),
             to: Some(to),
+            fuel: 1,
         }
     }
     pub fn new(road_type: RoadType) -> Road {
@@ -70,6 +73,7 @@ impl Road {
             road_type: road_type,
             from: None,
             to: None,
+            fuel: 1,
         }
     }
 
@@ -95,6 +99,17 @@ impl Road {
 
     pub fn road_type(&self) -> RoadType {
         self.road_type
+    }
+
+    pub fn set_fuel(&mut self, fuel: u32) {
+        self.fuel = fuel;
+    }
+
+    pub fn take_fuel(&mut self) -> bool {
+        if self.fuel > 0 {
+            self.fuel -= 1;
+        }
+        self.fuel <= 0
     }
 }
 
@@ -184,7 +199,8 @@ impl RoadMap {
 
             // propose some more
             if !did_merge {
-                let mut proposed = self.propose_with_global_goals(&road);
+                let branch = road.take_fuel();
+                let mut proposed = self.propose_with_global_goals(&road, branch);
                 self.frontier.append(&mut proposed);
             }
 
@@ -229,8 +245,6 @@ impl RoadMap {
             return (false, false);
         }
 
-        // TODO check if from already exists?
-
         // merge with nearby
         let mut merged = false;
         let merger = road.to.unwrap();
@@ -257,11 +271,19 @@ impl RoadMap {
         (true, merged)
     }
 
-    fn propose_with_global_goals(&self, road: &Road) -> Vec<Road> {
+    fn propose_with_global_goals(&self, road: &Road, branch: bool) -> Vec<Road> {
 
         let mut vec: Vec<Road> = Vec::new();
 
-        rules::propose_roads(road, &mut vec);
+        rules::propose_roads(road, branch, &mut vec);
+
+        if branch {
+            let mut rng = thread_rng();
+            for r in vec.iter_mut() {
+                let fuel = rng.gen_range(1, 4);
+                r.set_fuel(fuel);
+            }
+        }
 
         vec
     }

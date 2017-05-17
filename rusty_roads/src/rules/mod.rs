@@ -11,9 +11,9 @@ enum GenerationRule {
     Organic,
 }
 
-type Proposal = fn(&Point2<f64>, &Vector2<f64>, RoadType, &mut Vec<Road>);
+type Proposal = fn(&Point2<f64>, &Vector2<f64>, RoadType, bool, &mut Vec<Road>);
 
-pub fn propose_roads(road: &Road, out: &mut Vec<Road>) {
+pub fn propose_roads(road: &Road, branch: bool, out: &mut Vec<Road>) {
 
     let from = Point2::from(road.from().unwrap().pos);
     let to = Point2::from(road.to().unwrap().pos);
@@ -21,7 +21,7 @@ pub fn propose_roads(road: &Road, out: &mut Vec<Road>) {
 
     let rule = get_rule(road.to().as_ref().unwrap());
     if let Some(generator) = get_generator(rule) {
-        (generator)(&to, &vec, road.road_type(), out);
+        (generator)(&to, &vec, road.road_type(), branch, out);
     }
 }
 
