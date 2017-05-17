@@ -5,7 +5,7 @@ use std::process;
 use std::env;
 use rusty_roads::{RoadError, RoadMap};
 
-use sfml::system::Vector2f;
+use sfml::system::*;
 use sfml::window::{ContextSettings, VideoMode, Event, style};
 use sfml::graphics::*;
 
@@ -39,6 +39,12 @@ fn run(do_render: bool) -> Result<(), RoadError> {
     }
 }
 
+// convenience
+#[inline]
+fn vec(x: f64, y: f64) -> Vector2f {
+    Vector2f::new(x as f32, y as f32)
+}
+
 fn render_roadmap(window: &mut RenderWindow, roadmap: &RoadMap) {
     // TODO lazy_static for constants?
     let BACKGROUND_COLOUR: Color = Color::rgb(200, 200, 210);
@@ -46,25 +52,21 @@ fn render_roadmap(window: &mut RenderWindow, roadmap: &RoadMap) {
     let ROAD_COLOUR: Color = Color::rgb(20, 40, 60);
 
     // cache this
-    let background = [Vertex::with_pos_color(Vector2f::new(0.0, 0.0), BACKGROUND_COLOUR),
-                      Vertex::with_pos_color(Vector2f::new(roadmap.width() as f32, 0.0),
-                                             BACKGROUND_COLOUR),
-                      Vertex::with_pos_color(Vector2f::new(roadmap.width() as f32,
-                                                           roadmap.height() as f32),
-                                             BACKGROUND_COLOUR),
-                      Vertex::with_pos_color(Vector2f::new(0.0, roadmap.height() as f32),
-                                             BACKGROUND_COLOUR)];
+    let WIDTH = roadmap.width() as f64;
+    let HEIGHT = roadmap.height() as f64;
+    let background = [Vertex::with_pos_color(vec(0.0, 0.0), BACKGROUND_COLOUR),
+                      Vertex::with_pos_color(vec(WIDTH, 0.0), BACKGROUND_COLOUR),
+                      Vertex::with_pos_color(vec(WIDTH, HEIGHT), BACKGROUND_COLOUR),
+                      Vertex::with_pos_color(vec(0.0, HEIGHT), BACKGROUND_COLOUR)];
+
     window.draw_primitives(&background, PrimitiveType::Quads, RenderStates::default());
 
     let roads = roadmap.roads();
     for road in roads.iter() {
 
         if let (Some(from), Some(to)) = road.points() {
-            // TODO possible to use own f64 vector?
-            let line = [Vertex::with_pos_color(Vector2f::new(from.x() as f32, from.y() as f32),
-                                               ROAD_COLOUR),
-                        Vertex::with_pos_color(Vector2f::new(to.x() as f32, to.y() as f32),
-                                               ROAD_COLOUR)];
+            let line = [Vertex::with_pos_color(vec(from.x(), from.y()), ROAD_COLOUR),
+                        Vertex::with_pos_color(vec(to.x(), to.y()), ROAD_COLOUR)];
 
             window.draw_primitives(&line, PrimitiveType::Lines, RenderStates::default());
         }
@@ -77,7 +79,7 @@ fn render(roadmap: &RoadMap) -> Result<(), RoadError> {
                                        "Roads",
                                        style::CLOSE,
                                        &ContextSettings::default())
-                                       .unwrap();
+            .unwrap();
 
     loop {
         for event in window.events() {
