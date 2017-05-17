@@ -5,4 +5,4 @@ authors = ["Dom Williams <me@domwillia.ms>"]
 
 [dependencies]
 rusty_roads = {path = "../rusty_roads"}
-piston_window = "*"
+sfml = "0.12.0"

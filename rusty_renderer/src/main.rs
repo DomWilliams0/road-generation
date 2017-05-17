@@ -1,10 +1,14 @@
 extern crate rusty_roads;
-extern crate piston_window;
+extern crate sfml;
 
 use std::process;
 use std::env;
 use rusty_roads::{RoadError, RoadMap};
-use piston_window::*;
+
+use sfml::system::Vector2f;
+use sfml::window::{ContextSettings, VideoMode, Event, style};
+use sfml::graphics::*;
+
 
 fn main() {
     let render = env::args().nth(1).map(|x| x != "no-render");
@@ -35,41 +39,55 @@ fn run(do_render: bool) -> Result<(), RoadError> {
     }
 }
 
-fn render_roadmap(c: &Context, g: &mut G2d, roadmap: &RoadMap) {
-    rectangle([0.7, 0.7, 0.7, 1.],
-              [0., 0., roadmap.width() as f64, roadmap.height() as f64],
-              c.transform,
-              g);
+fn render_roadmap(window: &mut RenderWindow, roadmap: &RoadMap) {
+    // TODO lazy_static for constants?
+    let BACKGROUND_COLOUR: Color = Color::rgb(200, 200, 210);
+    let VERTEX_COLOUR: Color = Color::rgb(100, 200, 100);
+    let ROAD_COLOUR: Color = Color::rgb(20, 40, 60);
+
+    // cache this
+    let background = [Vertex::with_pos_color(Vector2f::new(0.0, 0.0), BACKGROUND_COLOUR),
+                      Vertex::with_pos_color(Vector2f::new(roadmap.width() as f32, 0.0),
+                                             BACKGROUND_COLOUR),
+                      Vertex::with_pos_color(Vector2f::new(roadmap.width() as f32,
+                                                           roadmap.height() as f32),
+                                             BACKGROUND_COLOUR),
+                      Vertex::with_pos_color(Vector2f::new(0.0, roadmap.height() as f32),
+                                             BACKGROUND_COLOUR)];
+    window.draw_primitives(&background, PrimitiveType::Quads, RenderStates::default());
 
     let roads = roadmap.roads();
     for road in roads.iter() {
 
         if let (Some(from), Some(to)) = road.points() {
-            line([0., 0., 0., 1.],
-                 2.,
-                 [from.x(), from.y(), to.x(), to.y()],
-                 c.transform,
-                 g);
+            // TODO possible to use own f64 vector?
+            let line = [Vertex::with_pos_color(Vector2f::new(from.x() as f32, from.y() as f32),
+                                               ROAD_COLOUR),
+                        Vertex::with_pos_color(Vector2f::new(to.x() as f32, to.y() as f32),
+                                               ROAD_COLOUR)];
+
+            window.draw_primitives(&line, PrimitiveType::Lines, RenderStates::default());
         }
     }
 
 }
 
 fn render(roadmap: &RoadMap) -> Result<(), RoadError> {
+    let mut window = RenderWindow::new(VideoMode::new(960, 600, 32),
+                                       "Roads",
+                                       style::CLOSE,
+                                       &ContextSettings::default())
+                                       .unwrap();
 
-    let mut window: PistonWindow = WindowSettings::new("Roadmap", [600; 2])
-        .exit_on_esc(true)
-        .opengl(OpenGL::V3_2)
-        .build()
-        .expect("Failed to create window");
-    window.set_lazy(true);
+    loop {
+        for event in window.events() {
+            if let Event::Closed = event {
+                break;
+            }
+        }
 
-    while let Some(e) = window.next() {
-        window.draw_2d(&e, |c, g| {
-            clear([1., 1., 1., 1.], g);
-            render_roadmap(&c, g, roadmap);
-        });
+        window.clear(&Color::white());
+        render_roadmap(&mut window, roadmap);
+        window.display()
     }
-
-    Ok(())
 }
