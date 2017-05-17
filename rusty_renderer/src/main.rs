@@ -32,13 +32,13 @@ fn generate() -> Result<RoadMap, RoadError> {
         .create()
 }
 
-fn run(_do_render: bool) -> Result<(), RoadError> {
+fn run(do_render: bool) -> Result<(), RoadError> {
 
-    // TODO no rendering
-    // if !do_render {
-    //     let _roadmap = generate()?;
-    //     return Ok(());
-    // }
+    // no rendering
+    if !do_render {
+        let _roadmap = generate()?;
+        return Ok(());
+    }
 
     let mut window = RenderWindow::new(VideoMode::new(960, 600, 32),
                                        "Roads",
@@ -65,7 +65,7 @@ fn run(_do_render: bool) -> Result<(), RoadError> {
 
         window.clear(&Color::white());
 
-        roadmap.advance();
+        roadmap.advance()?;
         render_roadmap(&mut window, &roadmap);
         window.display();
     }
