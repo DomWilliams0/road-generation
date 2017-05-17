@@ -238,7 +238,7 @@ impl RoadMap {
 
     // returns (accepted, merged)
     fn accept_local_constraints(&self, road: &mut Road) -> (bool, bool) {
-        const MERGE_RANGE: f64 = 10.;
+        const MERGE_RANGE: f64 = 18.;
 
         // out of range
         if !self.is_in_range(road) {

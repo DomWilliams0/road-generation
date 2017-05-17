@@ -4,6 +4,7 @@ use cgmath::{Vector2, Point2, Rad};
 use cgmath::prelude::*;
 
 mod grid;
+mod organic;
 
 enum GenerationRule {
     Grid,
@@ -26,12 +27,17 @@ pub fn propose_roads(road: &Road, branch: bool, out: &mut Vec<Road>) {
 }
 
 fn get_rule(point: &Point) -> GenerationRule {
-    GenerationRule::Grid
+    if point.x() < 400.0 { // arbitrary nonsense
+        GenerationRule::Grid
+    } else {
+        GenerationRule::Organic
+    }
 }
 
 fn get_generator(rule: GenerationRule) -> Option<Proposal> {
     match rule {
         GenerationRule::Grid => Some(grid::propose_branching_roads),
+        GenerationRule::Organic => Some(organic::propose_branching_roads),
         _ => None,
     }
 }
