@@ -6,7 +6,7 @@ use std::env;
 use rusty_roads::{RoadError, RoadMap};
 
 use sfml::system::*;
-use sfml::window::{ContextSettings, VideoMode, Event, style};
+use sfml::window::{ContextSettings, VideoMode, Event, style, Key};
 use sfml::graphics::*;
 
 
@@ -93,15 +93,25 @@ fn render(roadmap: &RoadMap) -> Result<(), RoadError> {
                                        &ContextSettings::default())
             .unwrap();
 
-    loop {
+    let mut running = true;
+    while running {
         for event in window.events() {
-            if let Event::Closed = event {
-                break;
+            match event {
+                Event::Closed => running = false,
+                Event::KeyPressed { code, .. } => {
+                    match code {
+                        Key::Escape => running = false,
+                        Key::Space => (), // TODO regenerate
+                        _ => (),
+                    }
+                }
+                _ => (),
             }
         }
-
         window.clear(&Color::white());
         render_roadmap(&mut window, roadmap);
-        window.display()
+        window.display();
     }
+
+    Ok(())
 }
