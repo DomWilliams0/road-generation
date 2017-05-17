@@ -48,7 +48,7 @@ fn vec(x: f64, y: f64) -> Vector2f {
 fn render_roadmap(window: &mut RenderWindow, roadmap: &RoadMap) {
     // TODO lazy_static for constants?
     let BACKGROUND_COLOUR: Color = Color::rgb(200, 200, 210);
-    let VERTEX_COLOUR: Color = Color::rgb(100, 200, 100);
+    let VERTEX_COLOUR: Color = Color::rgb(200, 100, 150);
     let ROAD_COLOUR: Color = Color::rgb(20, 40, 60);
 
     // cache this
@@ -61,10 +61,22 @@ fn render_roadmap(window: &mut RenderWindow, roadmap: &RoadMap) {
 
     window.draw_primitives(&background, PrimitiveType::Quads, RenderStates::default());
 
+
+    let mut circle = CircleShape::new_init(2.0, 20);
+    let rad = circle.radius() as f64;
+    circle.set_fill_color(&VERTEX_COLOUR);
+
     let roads = roadmap.roads();
     for road in roads.iter() {
 
         if let (Some(from), Some(to)) = road.points() {
+
+            for point in [from, to].iter() {
+                circle.set_position(&vec(point.x() - rad, point.y() - rad));
+                window.draw(&circle);
+            }
+
+
             let line = [Vertex::with_pos_color(vec(from.x(), from.y()), ROAD_COLOUR),
                         Vertex::with_pos_color(vec(to.x(), to.y()), ROAD_COLOUR)];
 
