@@ -3,14 +3,12 @@ use kdtree::kdtree::*;
 use rules;
 use rand::{thread_rng, Rng};
 
-pub struct RoadMap {
+pub struct RoadMap<'a> {
     kdtree: Kdtree<Point>,
     roads: Vec<Road>,
     frontier: Vec<Road>,
 
-    // TODO put settings object directly in here instead
-    width: i32,
-    height: i32,
+    settings: &'a RoadmapSettings
 }
 
 #[derive(Debug, Copy, Clone, PartialEq)]
@@ -137,8 +135,8 @@ fn validate_settings(settings: &RoadmapSettings) -> Result<(), RoadError> {
 }
 
 
-impl RoadMap {
-    pub fn generate(settings: &RoadmapSettings) -> Result<RoadMap, RoadError> {
+impl <'a>RoadMap<'a> {
+    pub fn generate(settings: &'a RoadmapSettings) -> Result<RoadMap, RoadError> {
         validate_settings(settings)?;
 
         let frontier = create_frontier();
@@ -155,11 +153,11 @@ impl RoadMap {
     }
 
     pub fn width(&self) -> i32 {
-        self.width
+        self.settings.width
     }
 
     pub fn height(&self) -> i32 {
-        self.height
+        self.settings.height
     }
 
     fn new(settings: &RoadmapSettings, frontier: Vec<Road>) -> RoadMap {
@@ -176,8 +174,7 @@ impl RoadMap {
 
         RoadMap {
             frontier: frontier,
-            width: settings.width,
-            height: settings.height,
+            settings: settings,
             roads: Vec::new(),
             kdtree: Kdtree::new(&mut frontier_points),
         }
@@ -229,8 +226,8 @@ impl RoadMap {
         let from = road.from.unwrap_or(Point::out_of_range());
         let to = road.to.unwrap_or(Point::out_of_range());
 
-        let w = (self.width + 1) as f64;
-        let h = (self.height + 1) as f64;
+        let w = (self.width() + 1) as f64;
+        let h = (self.height() + 1) as f64;
 
         from.pos[0] >= 0. && from.pos[0] < w && from.pos[1] >= 0. && from.pos[1] < h &&
         to.pos[0] >= 0. && to.pos[0] < w && to.pos[1] >= 0. && to.pos[1] < h

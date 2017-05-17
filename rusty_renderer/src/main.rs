@@ -27,9 +27,8 @@ fn main() {
 fn run(do_render: bool) -> Result<(), RoadError> {
 
     println!("Generating roadmap...");
-    let roadmap = rusty_roads::RoadmapBuilder::new()
-        .size(960, 600)
-        .generate()?;
+    let mut settings = rusty_roads::RoadmapBuilder::new();
+    let roadmap = settings.size(960, 600).generate()?;
 
     if do_render {
         println!("Rendering...");
