@@ -57,7 +57,7 @@ fn create_generator(config: &Config) -> Result<RoadMap, RoadError> {
 
 fn create_generated() -> Result<RoadMap, RoadError> {
     let mut config = load_initial_config()?;
-    config.growth_increment = None; // instant generation
+    config.window.growth_increment = None; // instant generation
 
     let mut roadmap = create_generator(&config)?;
     roadmap.advance()?;

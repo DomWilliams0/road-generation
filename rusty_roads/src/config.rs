@@ -6,11 +6,19 @@ use toml;
 
 #[derive(Clone, Deserialize, Default)]
 pub struct Config {
+    pub window: WindowConfig,
+    pub generation: GenerationConfig,
+}
+
+#[derive(Clone, Deserialize, Default)]
+pub struct WindowConfig {
     pub width: u32,
     pub height: u32,
-
     pub growth_increment: Option<u32>,
+}
 
+#[derive(Clone, Deserialize, Default)]
+pub struct GenerationConfig {
     pub merge_range: f64,
 }
 

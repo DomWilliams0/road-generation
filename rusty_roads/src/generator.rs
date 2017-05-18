@@ -96,8 +96,8 @@ fn create_frontier(config: &Config) -> Vec<Road> {
     let mut vec: Vec<Road> = Vec::new();
     let mut rng = thread_rng();
 
-    let a = Point::new(rng.gen_range(0.0, config.width as f64),
-                       rng.gen_range(0.0, config.height as f64));
+    let a = Point::new(rng.gen_range(0.0, config.window.width as f64),
+                       rng.gen_range(0.0, config.window.height as f64));
     let b = Point::new(a.x() + 20.0, a.y());
 
     let road = Road::new_with_points(RoadType::Large, a, b);
@@ -118,11 +118,11 @@ impl RoadMap {
     }
 
     pub fn width(&self) -> u32 {
-        self.config.width
+        self.config.window.width
     }
 
     pub fn height(&self) -> u32 {
-        self.config.height
+        self.config.window.height
     }
 
     fn with_frontier(config: Config, frontier: Vec<Road>) -> RoadMap {
@@ -146,8 +146,8 @@ impl RoadMap {
 
     pub fn advance(&mut self) -> Result<(), RoadError> {
         // TODO use Option properly dammit
-        let counting = self.config.growth_increment.is_some();
-        let mut count = self.config.growth_increment.unwrap_or(1);
+        let counting = self.config.window.growth_increment.is_some();
+        let mut count = self.config.window.growth_increment.unwrap_or(1);
 
         while count > 0 {
             if counting {
