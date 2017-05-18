@@ -4,18 +4,7 @@ version = "0.1.0"
 dependencies = [
  "cgmath 0.14.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "fux_kdtree 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide 0.12.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand 0.3.15 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "alga"
-version = "0.5.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "approx 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "num-complex 0.1.37 (registry+https://github.com/rust-lang/crates.io-index)",
- "num-traits 0.1.37 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -39,136 +28,9 @@ version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
-name = "generic-array"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "typenum 1.9.0 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
 name = "libc"
 version = "0.2.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-
-[[package]]
-name = "nalgebra"
-version = "0.12.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "alga 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "approx 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "generic-array 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "num-complex 0.1.37 (registry+https://github.com/rust-lang/crates.io-index)",
- "num-traits 0.1.37 (registry+https://github.com/rust-lang/crates.io-index)",
- "rand 0.3.15 (registry+https://github.com/rust-lang/crates.io-index)",
- "typenum 1.9.0 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "ncollide"
-version = "0.12.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "ncollide_geometry 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide_math 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide_pipeline 0.11.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide_procedural 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide_transformation 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide_utils 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "ncollide_geometry"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "alga 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "approx 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "nalgebra 0.12.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide_math 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide_utils 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "num-traits 0.1.37 (registry+https://github.com/rust-lang/crates.io-index)",
- "rustc-serialize 0.3.24 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "ncollide_math"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "alga 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "approx 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "nalgebra 0.12.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "num-traits 0.1.37 (registry+https://github.com/rust-lang/crates.io-index)",
- "rand 0.3.15 (registry+https://github.com/rust-lang/crates.io-index)",
- "rustc-serialize 0.3.24 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "ncollide_pipeline"
-version = "0.11.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "alga 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "nalgebra 0.12.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide_geometry 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide_math 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide_utils 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "rustc-serialize 0.3.24 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "ncollide_procedural"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "alga 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "nalgebra 0.12.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide_math 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide_utils 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "num-traits 0.1.37 (registry+https://github.com/rust-lang/crates.io-index)",
- "rustc-serialize 0.3.24 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "ncollide_transformation"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "alga 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "approx 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "nalgebra 0.12.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide_geometry 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide_math 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide_procedural 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide_utils 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "num-traits 0.1.37 (registry+https://github.com/rust-lang/crates.io-index)",
- "rustc-serialize 0.3.24 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "ncollide_utils"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "alga 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "approx 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "nalgebra 0.12.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "ncollide_math 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "num-traits 0.1.37 (registry+https://github.com/rust-lang/crates.io-index)",
- "rand 0.3.15 (registry+https://github.com/rust-lang/crates.io-index)",
- "rustc-serialize 0.3.24 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "num-complex"
-version = "0.1.37"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "num-traits 0.1.37 (registry+https://github.com/rust-lang/crates.io-index)",
- "rustc-serialize 0.3.24 (registry+https://github.com/rust-lang/crates.io-index)",
-]
 
 [[package]]
 name = "num-traits"
@@ -183,33 +45,10 @@ dependencies = [
  "libc 0.2.22 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
-[[package]]
-name = "rustc-serialize"
-version = "0.3.24"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-
-[[package]]
-name = "typenum"
-version = "1.9.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-
 [metadata]
-"checksum alga 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)" = "ac1e4aec8a55e9150c6941e3c1059272b8e607c0503f9b61ca12289e56efb87b"
 "checksum approx 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "08abcc3b4e9339e33a3d0a5ed15d84a687350c05689d825e0f6655eef9e76a94"
 "checksum cgmath 0.14.1 (registry+https://github.com/rust-lang/crates.io-index)" = "87f025a17ad3f30d49015c787903976d5f9cd6115ece1eb7f4d6ffe06b8c4080"
 "checksum fux_kdtree 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "216bf8256834a87394bf0364f82a92444ee8a00c757630a02a2bf278456f74e7"
-"checksum generic-array 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "3406a3975bc944fdd85b7964d53296a0ff11f4b6c4704fa4972c9a7c8ba27367"
 "checksum libc 0.2.22 (registry+https://github.com/rust-lang/crates.io-index)" = "babb8281da88cba992fa1f4ddec7d63ed96280a1a53ec9b919fd37b53d71e502"
-"checksum nalgebra 0.12.2 (registry+https://github.com/rust-lang/crates.io-index)" = "e05fd3b0cbb3b765cf760083f22ee5ea1419e097473d318919bb8a5e94d3267c"
-"checksum ncollide 0.12.0 (registry+https://github.com/rust-lang/crates.io-index)" = "19619527ec33f137c359d29d1b98087f8f2b527c2e68d715964c89db62761789"
-"checksum ncollide_geometry 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "d4b32a255bb528fd783440ac33f8fe1c8a7703c251379d5315acbc8b5be86f50"
-"checksum ncollide_math 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)" = "6f12f757355b4653167fa724f76ea9bbc4be8e04a10a01cbc0a55a11e5285d2c"
-"checksum ncollide_pipeline 0.11.0 (registry+https://github.com/rust-lang/crates.io-index)" = "c470615f0f5c79683234cd841cf26ad5c5847c32d04bdaa266a90623495de8b5"
-"checksum ncollide_procedural 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)" = "02f0e9226a4feb2604abf0bb6233521eade72650bf6e106c7ad4c728352e0a41"
-"checksum ncollide_transformation 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)" = "9bd0d3a773cccd59fadaf87f7701ce979671e29328bb6a2474c94ce80d7ecf05"
-"checksum ncollide_utils 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)" = "1424189d1ed3e12c556b01fe15371d5e2903e7ae310650c1103ddafa1686c783"
-"checksum num-complex 0.1.37 (registry+https://github.com/rust-lang/crates.io-index)" = "148eb324ca772230853418731ffdf13531738b50f89b30692a01fcdcb0a64677"
 "checksum num-traits 0.1.37 (registry+https://github.com/rust-lang/crates.io-index)" = "e1cbfa3781f3fe73dc05321bed52a06d2d491eaa764c52335cf4399f046ece99"
 "checksum rand 0.3.15 (registry+https://github.com/rust-lang/crates.io-index)" = "022e0636ec2519ddae48154b028864bdce4eaf7d35226ab8e65c611be97b189d"
-"checksum rustc-serialize 0.3.24 (registry+https://github.com/rust-lang/crates.io-index)" = "dcf128d1287d2ea9d80910b5f1120d0b8eede3fbf1abe91c40d39ea7d51e6fda"
-"checksum typenum 1.9.0 (registry+https://github.com/rust-lang/crates.io-index)" = "13a99dc6780ef33c78780b826cf9d2a78840b72cae9474de4bcaf9051e60ebbd"
