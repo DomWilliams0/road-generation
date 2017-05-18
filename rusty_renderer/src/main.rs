@@ -3,11 +3,13 @@ extern crate sfml;
 
 use std::process;
 use std::env;
-use rusty_roads::{RoadError, RoadMap};
+use rusty_roads::{RoadError, RoadMap, Config};
 
 use sfml::system::*;
 use sfml::window::{ContextSettings, VideoMode, Event, style, Key};
 use sfml::graphics::*;
+
+const CONFIG_PATH: &'static str = "config.toml";
 
 enum Action {
     GenerateOnly,
@@ -48,22 +50,31 @@ fn main() {
 
 }
 
-fn create_generator() -> Result<RoadMap, RoadError> {
-    generate_with_increment(Some(4))
+fn create_generator(config: &Config) -> Result<RoadMap, RoadError> {
+    let (_, new_config) = update_config(Some(config.clone()));
+    RoadMap::new(new_config)
 }
 
 fn create_generated() -> Result<RoadMap, RoadError> {
-    let mut roadmap = generate_with_increment(None)?;
+    let mut config = load_initial_config()?;
+    config.growth_increment = None; // instant generation
+
+    let mut roadmap = create_generator(&config)?;
     roadmap.advance()?;
     Ok(roadmap)
 }
 
-fn generate_with_increment(increment: Option<i32>) -> Result<RoadMap, RoadError> {
-    println!("Generating roadmap...");
-    rusty_roads::RoadmapBuilder::new()
-        .size(960, 600)
-        .increment(increment)
-        .create()
+fn load_initial_config() -> Result<Config, RoadError> {
+    match update_config(None) {
+        (false, _) => {
+            Err(RoadError::Settings(format!("Failed to load config from '{}'", CONFIG_PATH)))
+        }
+        (true, c) => Ok(c),
+    }
+}
+
+fn update_config(previous: Option<Config>) -> (bool, Config) {
+    previous.unwrap_or_default().load(CONFIG_PATH)
 }
 
 fn run() -> Result<(), RoadError> {
@@ -87,8 +98,10 @@ fn open_window() -> Result<(), RoadError> {
                                        &ContextSettings::default())
             .unwrap();
 
+    let config = load_initial_config()?;
+    let mut roadmap = create_generator(&config)?;
+
     let mut running = true;
-    let mut roadmap = create_generator()?;
     while running {
         for event in window.events() {
             match event {
@@ -96,7 +109,7 @@ fn open_window() -> Result<(), RoadError> {
                 Event::KeyPressed { code, .. } => {
                     match code {
                         Key::Escape => running = false,
-                        Key::Space => roadmap = create_generator()?,
+                        Key::Space => roadmap = create_generator(&config)?,
                         _ => (),
                     }
                 }

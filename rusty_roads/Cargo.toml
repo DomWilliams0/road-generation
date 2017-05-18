@@ -7,3 +7,6 @@ authors = ["Dom Williams <me@domwillia.ms>"]
 fux_kdtree = "*"
 rand = "0.3"
 cgmath = "0.14.1"
+toml = "0.4.1"
+serde = "1.0"
+serde_derive = "1.0.6"

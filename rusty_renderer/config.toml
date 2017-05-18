@@ -1,0 +1,6 @@
+width = 960
+height = 600
+
+growth_increment = 4
+
+merge_range = 18.0

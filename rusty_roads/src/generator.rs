@@ -1,5 +1,6 @@
-use kdtree::kdtree::KdtreePointTrait;
-use super::*;
+use kdtree::kdtree::*;
+use {Point, Road, RoadType, RoadMap, RoadError};
+use config::Config;
 use rules;
 use rand::{thread_rng, Rng};
 
@@ -91,12 +92,12 @@ impl Road {
 }
 
 
-fn create_frontier(settings: &RoadmapSettings) -> Vec<Road> {
+fn create_frontier(config: &Config) -> Vec<Road> {
     let mut vec: Vec<Road> = Vec::new();
     let mut rng = thread_rng();
 
-    let a = Point::new(rng.gen_range(0.0, settings.width as f64),
-                       rng.gen_range(0.0, settings.height as f64));
+    let a = Point::new(rng.gen_range(0.0, config.width as f64),
+                       rng.gen_range(0.0, config.height as f64));
     let b = Point::new(a.x() + 20.0, a.y());
 
     let road = Road::new_with_points(RoadType::Large, a, b);
@@ -104,24 +105,11 @@ fn create_frontier(settings: &RoadmapSettings) -> Vec<Road> {
 
     vec
 }
-fn validate_settings(settings: &RoadmapSettings) -> Result<(), RoadError> {
-    if settings.width < 50 {
-        return Err(RoadError::Settings("Width must be at least 50"));
-    }
-    if settings.height < 50 {
-        return Err(RoadError::Settings("Height must be at least 50"));
-    }
-
-    Ok(())
-}
-
 
 impl RoadMap {
-    pub fn create(settings: RoadmapSettings) -> Result<RoadMap, RoadError> {
-        validate_settings(&settings)?;
-
-        let frontier = create_frontier(&settings);
-        Ok(RoadMap::new(settings, frontier))
+    pub fn new(config: Config) -> Result<RoadMap, RoadError> {
+        let frontier = create_frontier(&config);
+        Ok(RoadMap::with_frontier(config, frontier))
 
     }
 
@@ -129,15 +117,15 @@ impl RoadMap {
         &self.roads
     }
 
-    pub fn width(&self) -> i32 {
-        self.settings.width
+    pub fn width(&self) -> u32 {
+        self.config.width
     }
 
-    pub fn height(&self) -> i32 {
-        self.settings.height
+    pub fn height(&self) -> u32 {
+        self.config.height
     }
 
-    fn new(settings: RoadmapSettings, frontier: Vec<Road>) -> RoadMap {
+    fn with_frontier(config: Config, frontier: Vec<Road>) -> RoadMap {
         let mut frontier_points = frontier
             .iter()
             .fold(Vec::with_capacity(frontier.len() * 2), |mut acc, road| {
@@ -150,7 +138,7 @@ impl RoadMap {
 
         RoadMap {
             frontier: frontier,
-            settings: settings,
+            config: config,
             roads: Vec::new(),
             kdtree: Kdtree::new(&mut frontier_points),
         }
@@ -158,8 +146,8 @@ impl RoadMap {
 
     pub fn advance(&mut self) -> Result<(), RoadError> {
         // TODO use Option properly dammit
-        let counting = self.settings.increment.is_some();
-        let mut count = self.settings.increment.unwrap_or(1);
+        let counting = self.config.growth_increment.is_some();
+        let mut count = self.config.growth_increment.unwrap_or(1);
 
         while count > 0 {
             if counting {
