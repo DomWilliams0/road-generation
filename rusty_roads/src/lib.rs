@@ -65,13 +65,13 @@ impl RoadmapBuilder {
         }
     }
 
-    pub fn size<'a>(&'a mut self, w: i32, h: i32) -> &'a mut RoadmapBuilder {
+    pub fn size(&mut self, w: i32, h: i32) -> &mut RoadmapBuilder {
         self.settings.width = w;
         self.settings.height = h;
         self
     }
 
-    pub fn increment<'a>(&'a mut self, increment: Option<i32>) -> &'a mut RoadmapBuilder {
+    pub fn increment(&mut self, increment: Option<i32>) -> &mut RoadmapBuilder {
         self.settings.increment = increment;
         self
     }

@@ -86,7 +86,7 @@ impl Road {
         if self.fuel > 0 {
             self.fuel -= 1;
         }
-        self.fuel <= 0
+        self.fuel == 0
     }
 }
 
@@ -140,12 +140,11 @@ impl RoadMap {
     fn new(settings: RoadmapSettings, frontier: Vec<Road>) -> RoadMap {
         let mut frontier_points = frontier
             .iter()
-            .fold(Vec::with_capacity(frontier.len() * 2),
-                  |mut acc, ref road| {
-                      road.from.map_or((), |p| acc.push(p));
-                      road.to.map_or((), |p| acc.push(p));
-                      acc
-                  });
+            .fold(Vec::with_capacity(frontier.len() * 2), |mut acc, road| {
+                road.from.map_or((), |p| acc.push(p));
+                road.to.map_or((), |p| acc.push(p));
+                acc
+            });
 
         frontier_points.pop();
 
@@ -217,8 +216,8 @@ impl RoadMap {
 
     // TODO check only from?
     fn is_in_range(&self, road: &Road) -> bool {
-        let from = road.from.unwrap_or(Point::out_of_range());
-        let to = road.to.unwrap_or(Point::out_of_range());
+        let from = road.from.unwrap_or_else(Point::out_of_range);
+        let to = road.to.unwrap_or_else(Point::out_of_range);
 
         let w = (self.width() + 1) as f64;
         let h = (self.height() + 1) as f64;
@@ -270,7 +269,7 @@ impl RoadMap {
 
         if branch {
             let mut rng = thread_rng();
-            for r in vec.iter_mut() {
+            for r in &mut vec {
                 let fuel = rng.gen_range(1, 4);
                 r.set_fuel(fuel);
             }

@@ -20,7 +20,7 @@ pub fn propose_branching_roads(point: &Point2<f64>,
         out.push(propose_road(GRID_ANGLES[1], cur_angle, ROAD_LENGTH, point, road_type));
     } else {
 
-        for grid_angle in GRID_ANGLES.iter() {
+        for grid_angle in &GRID_ANGLES {
 
             // unlucky
             let Closed01(chance) = random::<Closed01<f64>>();
@@ -40,7 +40,7 @@ fn propose_road(angle: f64,
                 road_type: RoadType)
                 -> Road {
 
-    let new_angle = cur_angle + Rad(angle.clone());
+    let new_angle = cur_angle + Rad(angle);
 
     let new_x = point.x + (Angle::cos(new_angle) * length);
     let new_y = point.y + (Angle::sin(new_angle) * length);

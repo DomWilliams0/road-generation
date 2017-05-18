@@ -148,7 +148,7 @@ fn render_roadmap(target: &mut RenderTarget, roadmap: &RoadMap) {
 
         if let (Some(from), Some(to)) = road.points() {
 
-            for point in [from, to].iter() {
+            for point in &[from, to] {
                 circle.set_position(&vec(point.x() - rad, point.y() - rad));
                 target.draw(&circle);
             }
@@ -173,12 +173,13 @@ fn render_to_image() -> Result<(), RoadError> {
 
     let path = "/tmp/roadmap.png";
     println!("Saving to '{}'", path);
-    match texture
-              .texture()
-              .copy_to_image()
-              .ok_or(RoadError::Unknown("Converting texture to image"))?
-              .save_to_file(path) {
-        true => Ok(()),
-        false => Err(RoadError::Unknown("Saving to file")),
+    if texture
+           .texture()
+           .copy_to_image()
+           .ok_or(RoadError::Unknown("Converting texture to image"))?
+           .save_to_file(path) {
+        Ok(())
+    } else {
+        Err(RoadError::Unknown("Saving to file"))
     }
 }

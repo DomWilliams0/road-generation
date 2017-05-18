@@ -20,7 +20,7 @@ pub fn propose_roads(road: &Road, branch: bool, out: &mut Vec<Road>) {
     let vec = (to - from).normalize();
 
     let rule = get_rule(road.to().as_ref().unwrap());
-    if let Some(generator) = get_generator(rule) {
+    if let Some(generator) = get_generator(&rule) {
         (generator)(&to, &vec, road.road_type(), branch, out);
     }
 }
@@ -34,8 +34,8 @@ fn get_rule(point: &Point) -> GenerationRule {
     }
 }
 
-fn get_generator(rule: GenerationRule) -> Option<Proposal> {
-    match rule {
+fn get_generator(rule: &GenerationRule) -> Option<Proposal> {
+    match *rule {
         GenerationRule::Grid => Some(grid::propose_branching_roads),
         GenerationRule::Organic => Some(organic::propose_branching_roads),
         // _ => None,
