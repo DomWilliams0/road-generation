@@ -220,17 +220,18 @@ impl RoadMap {
 
     // returns (accepted, merged)
     fn accept_local_constraints(&self, road: &mut Road) -> (bool, bool) {
-        const MERGE_RANGE: f64 = 18.;
-
         // out of range
         if !self.is_in_range(road) {
             return (false, false);
         }
 
+        let config = self.config.generation(&road.road_type());
+
         // merge with nearby
         let mut merged = false;
         let merger = road.to.unwrap();
-        if self.kdtree.has_neighbor_in_range(&merger, MERGE_RANGE) {
+        if self.kdtree
+               .has_neighbor_in_range(&merger, config.merge_range) {
             let nearest = self.kdtree.nearest_search(&merger);
 
             // self, therefore this is a duplicate

@@ -1,3 +1,4 @@
+use RoadType;
 use std::io::prelude::*;
 use std::fs::File;
 use std::error::Error;
@@ -7,7 +8,7 @@ use toml;
 #[derive(Clone, Deserialize, Default)]
 pub struct Config {
     pub window: WindowConfig,
-    pub generation: GenerationConfig,
+    generation: GenerationConfigs,
 }
 
 #[derive(Clone, Deserialize, Default)]
@@ -16,6 +17,14 @@ pub struct WindowConfig {
     pub height: u32,
     pub growth_increment: Option<u32>,
 }
+
+#[derive(Clone, Deserialize, Default)]
+struct GenerationConfigs {
+    large: GenerationConfig,
+    medium: Option<GenerationConfig>,
+    small: Option<GenerationConfig>,
+}
+
 
 #[derive(Clone, Deserialize, Default)]
 pub struct GenerationConfig {
@@ -50,5 +59,16 @@ impl Config {
                 (false, self)
             }
         }
+    }
+
+    // defaults to Large config if not specified in config
+    pub fn generation(&self, road_type: &RoadType) -> &GenerationConfig {
+        let gen = match *road_type {
+            RoadType::Large => Some(&self.generation.large),
+            RoadType::Medium => self.generation.medium.as_ref(),
+            RoadType::Small => self.generation.small.as_ref(),
+        };
+
+        gen.unwrap_or(&self.generation.large)
     }
 }
