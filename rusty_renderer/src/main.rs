@@ -136,25 +136,24 @@ fn vec(x: f64, y: f64) -> Vector2f {
 }
 
 fn render_roadmap(target: &mut RenderTarget, roadmap: &RoadMap) {
-    // TODO lazy_static for constants?
-    let BACKGROUND_COLOUR: Color = Color::rgb(240, 240, 255);
-    let VERTEX_COLOUR: Color = Color::rgba(70, 200, 150, 150);
-    let ROAD_COLOUR: Color = Color::rgb(20, 40, 60);
+    let background_colour: Color = Color::rgb(240, 240, 255);
+    let vertex_colour: Color = Color::rgba(70, 200, 150, 150);
+    let road_colour: Color = Color::rgb(20, 40, 60);
 
     // cache this
-    let WIDTH = roadmap.width() as f64;
-    let HEIGHT = roadmap.height() as f64;
-    let background = [Vertex::with_pos_color(vec(0.0, 0.0), BACKGROUND_COLOUR),
-                      Vertex::with_pos_color(vec(WIDTH, 0.0), BACKGROUND_COLOUR),
-                      Vertex::with_pos_color(vec(WIDTH, HEIGHT), BACKGROUND_COLOUR),
-                      Vertex::with_pos_color(vec(0.0, HEIGHT), BACKGROUND_COLOUR)];
+    let width = roadmap.width() as f64;
+    let height = roadmap.height() as f64;
+    let background = [Vertex::with_pos_color(vec(0.0, 0.0), background_colour),
+                      Vertex::with_pos_color(vec(width, 0.0), background_colour),
+                      Vertex::with_pos_color(vec(width, height), background_colour),
+                      Vertex::with_pos_color(vec(0.0, height), background_colour)];
 
     target.draw_primitives(&background, PrimitiveType::Quads, RenderStates::default());
 
 
     let mut circle = CircleShape::new_init(2.0, 20);
     let rad = circle.radius() as f64;
-    circle.set_fill_color(&VERTEX_COLOUR);
+    circle.set_fill_color(&vertex_colour);
 
     let roads = roadmap.roads();
     for road in roads.iter() {
@@ -167,8 +166,8 @@ fn render_roadmap(target: &mut RenderTarget, roadmap: &RoadMap) {
             }
 
 
-            let line = [Vertex::with_pos_color(vec(from.x(), from.y()), ROAD_COLOUR),
-                        Vertex::with_pos_color(vec(to.x(), to.y()), ROAD_COLOUR)];
+            let line = [Vertex::with_pos_color(vec(from.x(), from.y()), road_colour),
+                        Vertex::with_pos_color(vec(to.x(), to.y()), road_colour)];
 
             target.draw_primitives(&line, PrimitiveType::Lines, RenderStates::default());
         }
