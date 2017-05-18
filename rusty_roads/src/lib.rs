@@ -3,8 +3,9 @@ extern crate rand;
 extern crate cgmath;
 
 pub mod generator;
-pub use generator::RoadMap;
 mod rules;
+
+use kdtree::kdtree::Kdtree;
 
 #[derive(Debug)]
 pub enum RoadError {
@@ -13,6 +14,27 @@ pub enum RoadError {
     Unknown(&'static str),
 }
 
+
+pub struct RoadMap {
+    kdtree: Kdtree<Point>,
+    roads: Vec<Road>,
+    frontier: Vec<Road>,
+
+    settings: RoadmapSettings,
+}
+
+#[derive(Debug, Copy, Clone, PartialEq)]
+pub struct Point {
+    pub pos: [f64; 2],
+}
+
+#[derive(Debug)]
+pub struct Road {
+    from: Option<Point>,
+    to: Option<Point>,
+    road_type: RoadType,
+    fuel: u32,
+}
 
 pub struct RoadmapBuilder {
     pub settings: RoadmapSettings,

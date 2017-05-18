@@ -1,5 +1,4 @@
-use super::super::RoadType; // oof
-use generator::{Road, Point};
+use {Road, RoadType, Point};
 use rand::{Rng, thread_rng, random, Closed01};
 use std::f64::consts::PI;
 use cgmath::{Vector2, Point2, Rad};

@@ -1,5 +1,4 @@
-use super::RoadType;
-use generator::{Road, Point};
+use {Road, RoadType, Point};
 use cgmath::{Vector2, Point2};
 use cgmath::prelude::*;
 

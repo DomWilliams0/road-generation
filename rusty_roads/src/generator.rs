@@ -1,28 +1,7 @@
-use super::{RoadError, RoadType, RoadmapSettings};
-use kdtree::kdtree::*;
+use kdtree::kdtree::KdtreePointTrait;
+use super::*;
 use rules;
 use rand::{thread_rng, Rng};
-
-pub struct RoadMap {
-    kdtree: Kdtree<Point>,
-    roads: Vec<Road>,
-    frontier: Vec<Road>,
-
-    settings: RoadmapSettings,
-}
-
-#[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Point {
-    pub pos: [f64; 2],
-}
-
-#[derive(Debug)]
-pub struct Road {
-    from: Option<Point>,
-    to: Option<Point>,
-    road_type: RoadType,
-    fuel: u32,
-}
 
 impl Point {
     pub fn new(x: f64, y: f64) -> Point {
