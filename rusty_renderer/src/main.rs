@@ -3,6 +3,8 @@ extern crate sfml;
 
 use std::process;
 use std::env;
+use std::fs;
+use std::path;
 use rusty_roads::{RoadError, RoadMap, Config};
 
 use sfml::system::*;
@@ -174,24 +176,38 @@ fn render_roadmap(target: &mut RenderTarget, roadmap: &RoadMap) {
     }
 }
 
+const RENDER_DIR: &'static str = "/tmp/roads";
+const RENDER_COUNT: u32 = 10;
 
 fn render_to_image() -> Result<(), RoadError> {
-    let roadmap = create_generated()?;
 
-    let mut texture = RenderTexture::new(roadmap.width() as u32, roadmap.height() as u32, false)
-        .ok_or(RoadError::Unknown("Texture creation"))?;
+    fs::remove_dir_all(RENDER_DIR)
+        .or(Err(RoadError::Unknown("Deleting old renders")))?;
+    fs::DirBuilder::new()
+        .create(RENDER_DIR)
+        .or(Err(RoadError::Unknown("Render directory creation")))?;
+    println!("Generating {} roadmaps in {}", RENDER_COUNT, RENDER_DIR);
 
-    render_roadmap(&mut texture, &roadmap);
+    for i in 0..RENDER_COUNT {
+        println!("Rendering {}/{}", i + 1, RENDER_COUNT);
+        let roadmap = create_generated()?;
 
-    let path = "/tmp/roadmap.png";
-    println!("Saving to '{}'", path);
-    if texture
-           .texture()
-           .copy_to_image()
-           .ok_or(RoadError::Unknown("Converting texture to image"))?
-           .save_to_file(path) {
-        Ok(())
-    } else {
-        Err(RoadError::Unknown("Saving to file"))
+        let mut texture =
+            RenderTexture::new(roadmap.width() as u32, roadmap.height() as u32, false)
+                .ok_or(RoadError::Unknown("Texture creation"))?;
+
+        render_roadmap(&mut texture, &roadmap);
+        let path = path::Path::join(path::Path::new(RENDER_DIR), format!("road-{}.png", i));
+
+        if !texture
+                .texture()
+                .copy_to_image()
+                .ok_or(RoadError::Unknown("Converting texture to image"))?
+                .save_to_file(path.to_str().unwrap()) {
+            return Err(RoadError::Unknown("Saving to file"));
+        }
+
     }
+
+    Ok(())
 }
