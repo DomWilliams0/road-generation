@@ -89,6 +89,10 @@ impl Road {
         }
         self.fuel == 0
     }
+
+    pub fn fuel(&self) -> u32 {
+        self.fuel
+    }
 }
 
 
@@ -258,8 +262,12 @@ impl RoadMap {
         if branch {
             let mut rng = thread_rng();
             for r in &mut vec {
-                let fuel = rng.gen_range(1, 4);
+                let fuel = rng.gen_range(4, 10);
                 r.set_fuel(fuel);
+            }
+        } else {
+            for r in &mut vec {
+                r.set_fuel(road.fuel());
             }
         }
 
