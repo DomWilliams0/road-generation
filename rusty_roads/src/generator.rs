@@ -112,12 +112,15 @@ impl Road {
 }
 
 
-fn create_frontier() -> Vec<Road> {
+fn create_frontier(settings: &RoadmapSettings) -> Vec<Road> {
     let mut vec: Vec<Road> = Vec::new();
+    let mut rng = thread_rng();
 
-    // TODO randomise
-    let a = Point::new(100., 100.);
-    let b = Point::new(100., 120.);
+    let a = Point::new(rng.gen_range(0.0, settings.width as f64),
+                       rng.gen_range(0.0, settings.height as f64));
+    let b = Point::new(a.x() + 20.0,
+                       a.y());
+
     let road = Road::new_with_points(RoadType::Large, a, b);
     vec.push(road);
 
@@ -139,7 +142,7 @@ impl RoadMap {
     pub fn create(settings: RoadmapSettings) -> Result<RoadMap, RoadError> {
         validate_settings(&settings)?;
 
-        let frontier = create_frontier();
+        let frontier = create_frontier(&settings);
         Ok(RoadMap::new(settings, frontier))
 
     }
@@ -210,6 +213,10 @@ impl RoadMap {
                 let branch = road.take_fuel();
                 let mut proposed = self.propose_with_global_goals(&road, branch);
                 self.frontier.append(&mut proposed);
+
+                // profiling shows that this has a negligible effect
+                // and it looks pretty
+                thread_rng().shuffle(&mut self.frontier);
             }
 
             // add self to world

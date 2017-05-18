@@ -83,8 +83,8 @@ fn vec(x: f64, y: f64) -> Vector2f {
 
 fn render_roadmap(window: &mut RenderWindow, roadmap: &RoadMap) {
     // TODO lazy_static for constants?
-    let BACKGROUND_COLOUR: Color = Color::rgb(200, 200, 210);
-    let VERTEX_COLOUR: Color = Color::rgb(200, 100, 150);
+    let BACKGROUND_COLOUR: Color = Color::rgb(240, 240, 255);
+    let VERTEX_COLOUR: Color = Color::rgba(70, 200, 150, 150);
     let ROAD_COLOUR: Color = Color::rgb(20, 40, 60);
 
     // cache this
