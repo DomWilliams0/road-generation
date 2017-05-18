@@ -8,7 +8,9 @@ mod rules;
 
 #[derive(Debug)]
 pub enum RoadError {
+    Args(String),
     Settings(&'static str),
+    Unknown(&'static str),
 }
 
 

@@ -118,8 +118,7 @@ fn create_frontier(settings: &RoadmapSettings) -> Vec<Road> {
 
     let a = Point::new(rng.gen_range(0.0, settings.width as f64),
                        rng.gen_range(0.0, settings.height as f64));
-    let b = Point::new(a.x() + 20.0,
-                       a.y());
+    let b = Point::new(a.x() + 20.0, a.y());
 
     let road = Road::new_with_points(RoadType::Large, a, b);
     vec.push(road);
