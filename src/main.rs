@@ -1,11 +1,11 @@
-extern crate rusty_roads;
+extern crate road_generation;
 extern crate sfml;
 
 use std::process;
 use std::env;
 use std::fs;
 use std::path;
-use rusty_roads::{RoadError, RoadMap, Config};
+use road_generation::{RoadError, RoadMap, Config};
 
 use sfml::system::*;
 use sfml::window::{ContextSettings, VideoMode, Event, style, Key};

@@ -1,8 +1,10 @@
 [package]
-name = "rusty_renderer"
+name = "road_renderer"
 version = "0.1.0"
 authors = ["Dom Williams <me@domwillia.ms>"]
 
 [dependencies]
-rusty_roads = {path = "../rusty_roads"}
+road_generation = {path = "road_generation"}
 sfml = "0.12.0"
+
+[workspace]

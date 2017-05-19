@@ -1,7 +1,10 @@
 [package]
-name = "rusty_roads"
+name = "road_generation"
 version = "0.1.0"
 authors = ["Dom Williams <me@domwillia.ms>"]
+repository = "https://github.com/DomWilliams0/road-generation"
+description = """Procedural road generation"""
+readme = "README.md"
 
 [dependencies]
 fux_kdtree = "*"
