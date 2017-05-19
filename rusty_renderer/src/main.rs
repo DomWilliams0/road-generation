@@ -100,11 +100,16 @@ fn open_window() -> Result<(), RoadError> {
                                        &ContextSettings::default())
             .unwrap();
 
+    window.set_framerate_limit(60);
+    window.set_vertical_sync_enabled(true);
+
     let config = load_initial_config()?;
     let mut roadmap = create_generator(&config)?;
 
     let mut running = true;
+    let mut last_count = 0;
     while running {
+        let mut dirty = false;
         for event in window.events() {
             match event {
                 Event::Closed => running = false,
@@ -115,14 +120,26 @@ fn open_window() -> Result<(), RoadError> {
                         _ => (),
                     }
                 }
+                Event::Resized { .. } => dirty = true,
                 _ => (),
             }
         }
 
-        window.clear(&Color::white());
-
         roadmap.advance()?;
-        render_roadmap(&mut window, &roadmap);
+
+        // render only if dirty
+        let len = roadmap.roads().len();
+        if len != last_count {
+            dirty = true;
+        }
+        last_count = len;
+
+
+        if dirty {
+            window.clear(&Color::white());
+            render_roadmap(&mut window, &roadmap);
+        }
+
         window.display();
     }
 
