@@ -1,5 +1,5 @@
 use {Road, RoadType, Point};
-use cgmath::{Vector2, Point2, Angle, Rad};
+use cgmath::{Point2, Angle, Rad};
 use cgmath::prelude::*;
 use config;
 
@@ -29,6 +29,7 @@ pub struct Proposal {
     pub from: Point2<f64>,
     pub length: f64,
 }
+
 impl Proposal {
     fn to_road(self) -> Road {
         let angle = Rad(self.angle);
@@ -44,6 +45,7 @@ impl Proposal {
 
     }
 }
+
 pub fn propose_roads(config: &config::GenerationConfig,
                      road: &Road,
                      branch: bool,
@@ -54,7 +56,6 @@ pub fn propose_roads(config: &config::GenerationConfig,
 
     let vec = (to - from).normalize();
     let Rad(cur_angle) = Rad::atan2(vec.y, vec.x);
-
 
     let mut proposals: Proposals = new_proposals!();
 
@@ -88,8 +89,8 @@ fn get_rule(point: &Point) -> GenerationRule {
 
 fn get_generator(rule: &GenerationRule) -> Option<ProposalGenerator> {
     match *rule {
-        GenerationRule::Grid => Some(grid::propose_branching_roads),
-        // GenerationRule::Organic => Some(organic::propose_branching_roads), // temporary
-        _ => None,
+        GenerationRule::Grid => Some(grid::propose),
+        GenerationRule::Organic => Some(organic::propose),
+        // _ => None,
     }
 }

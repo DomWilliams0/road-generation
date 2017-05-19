@@ -4,13 +4,13 @@ use std::f64::consts::PI;
 use cgmath::Point2;
 use super::{Proposal, Proposals};
 
-pub fn propose_branching_roads(point: &Point2<f64>,
-                               cur_angle: f64,
-                               road_type: RoadType,
-                               branch: bool,
-                               road_chance: f64,
-                               road_length: f64,
-                               out: &mut Proposals) {
+pub fn propose(point: &Point2<f64>,
+               cur_angle: f64,
+               road_type: RoadType,
+               branch: bool,
+               road_chance: f64,
+               road_length: f64,
+               out: &mut Proposals) {
     const GRID_ANGLES: [f64; 3] = [-PI / 2., 0., PI / 2.];
 
     if !branch {
