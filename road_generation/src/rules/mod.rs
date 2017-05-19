@@ -20,7 +20,7 @@ macro_rules! new_proposals {
   }
 }
 
-type ProposalGenerator = fn(&Point2<f64>, f64, RoadType, bool, f64, f64, &mut Proposals);
+type ProposalGenerator = fn(&Point2<f64>, f64, RoadType, bool, &config::GenerationConfig, &mut Proposals);
 
 #[derive(Copy, Clone)]
 pub struct Proposal {
@@ -65,8 +65,7 @@ pub fn propose_roads(config: &config::GenerationConfig,
                     cur_angle,
                     road.road_type(),
                     branch,
-                    config.road_chance,
-                    config.road_length,
+                    config,
                     &mut proposals);
     }
 

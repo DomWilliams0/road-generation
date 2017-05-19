@@ -32,6 +32,7 @@ pub struct GenerationConfig {
     pub fuel_range: [u32; 2],
     pub road_chance: f64,
     pub road_length: f64,
+    pub organic_angle: f64,
 }
 
 impl Config {

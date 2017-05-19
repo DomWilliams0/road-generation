@@ -8,3 +8,4 @@ fuel_range = [2, 5]
 road_chance = 0.8
 road_length = 20.0
 merge_range = 18.0
+organic_angle = 25
