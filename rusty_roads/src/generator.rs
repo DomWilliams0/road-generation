@@ -258,7 +258,10 @@ impl RoadMap {
 
         let mut vec: Vec<Road> = Vec::new();
 
-        rules::propose_roads(road, branch, &mut vec);
+        rules::propose_roads(self.config.generation(&road.road_type()),
+                             road,
+                             branch,
+                             &mut vec);
 
         let range = self.config.generation(&road.road_type()).fuel_range;
 

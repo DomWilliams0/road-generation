@@ -1,6 +1,7 @@
 use {Road, RoadType, Point};
 use cgmath::{Vector2, Point2};
 use cgmath::prelude::*;
+use config;
 
 mod grid;
 mod organic;
@@ -11,9 +12,18 @@ enum GenerationRule {
     Organic,
 }
 
-type Proposal = fn(&Point2<f64>, &Vector2<f64>, RoadType, bool, &mut Vec<Road>);
+type Proposal = fn(&Point2<f64>,
+                   &Vector2<f64>,
+                   RoadType,
+                   bool,
+                   f64,
+                   f64,
+                   &mut Vec<Road>);
 
-pub fn propose_roads(road: &Road, branch: bool, out: &mut Vec<Road>) {
+pub fn propose_roads(config: &config::GenerationConfig,
+                     road: &Road,
+                     branch: bool,
+                     out: &mut Vec<Road>) {
 
     let from = Point2::from(road.from().unwrap().pos);
     let to = Point2::from(road.to().unwrap().pos);
@@ -21,7 +31,13 @@ pub fn propose_roads(road: &Road, branch: bool, out: &mut Vec<Road>) {
 
     let rule = get_rule(road.to().as_ref().unwrap());
     if let Some(generator) = get_generator(&rule) {
-        (generator)(&to, &vec, road.road_type(), branch, out);
+        (generator)(&to,
+                    &vec,
+                    road.road_type(),
+                    branch,
+                    config.road_chance,
+                    config.road_length,
+                    out);
     }
 }
 

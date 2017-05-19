@@ -30,6 +30,8 @@ struct GenerationConfigs {
 pub struct GenerationConfig {
     pub merge_range: f64,
     pub fuel_range: [u32; 2],
+    pub road_chance: f64,
+    pub road_length: f64,
 }
 
 impl Config {
