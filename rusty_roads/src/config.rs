@@ -29,6 +29,7 @@ struct GenerationConfigs {
 #[derive(Clone, Deserialize, Default)]
 pub struct GenerationConfig {
     pub merge_range: f64,
+    pub fuel_range: [u32; 2],
 }
 
 impl Config {
