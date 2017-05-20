@@ -1,7 +1,7 @@
 [window]
 width = 960
 height = 600
-growth_increment = 4
+growth_increment = 8
 
 [generation.large]
 fuel_range = [2, 5]
