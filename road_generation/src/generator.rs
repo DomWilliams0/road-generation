@@ -207,14 +207,17 @@ impl RoadMap {
 
     // TODO check only from?
     fn is_in_range(&self, road: &Road) -> bool {
+        const PADDING: f64 = 10.;
+
         let from = road.from.unwrap_or_else(Point::out_of_range);
         let to = road.to.unwrap_or_else(Point::out_of_range);
 
-        let w = (self.width() + 1) as f64;
-        let h = (self.height() + 1) as f64;
+        let w = (self.width() + PADDING as u32) as f64;
+        let h = (self.height() + PADDING as u32) as f64;
 
-        from.pos[0] >= 0. && from.pos[0] < w && from.pos[1] >= 0. && from.pos[1] < h &&
-        to.pos[0] >= 0. && to.pos[0] < w && to.pos[1] >= 0. && to.pos[1] < h
+        from.pos[0] >= -PADDING && from.pos[0] < w && from.pos[1] >= -PADDING &&
+        from.pos[1] < h && to.pos[0] >= -PADDING && to.pos[0] < w &&
+        to.pos[1] >= -PADDING && to.pos[1] < h
     }
 
     // returns (accepted, merged)
