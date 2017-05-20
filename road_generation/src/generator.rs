@@ -236,13 +236,21 @@ impl RoadMap {
                .has_neighbor_in_range(&merger, config.merge_range) {
             let nearest = self.kdtree.nearest_search(&merger);
 
+            // self, therefore this is a duplicate
+            if nearest == merger {
+                return (false, false);
+            }
+
+            // other end of self
+            if nearest == road.from.unwrap() {
+                return (false, false);
+            }
+
             // println!("Merging");
 
-            // not self
-            if nearest != merger && nearest != road.from.unwrap() {
-                road.set_to(nearest);
-                merged = true;
-            }
+            // merge with the new closest
+            road.set_to(nearest);
+            merged = true;
         }
 
         (true, merged)
