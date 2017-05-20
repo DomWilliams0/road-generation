@@ -3,6 +3,7 @@ use {Point, Road, RoadType, RoadMap, RoadError};
 use config::Config;
 use rules;
 use rand::{thread_rng, Rng};
+use std::collections::VecDeque;
 
 impl Point {
     pub fn new(x: f64, y: f64) -> Point {
@@ -142,7 +143,7 @@ impl RoadMap {
         frontier_points.pop();
 
         RoadMap {
-            frontier: frontier,
+            frontier: VecDeque::from(frontier),
             config: config,
             roads: Vec::new(),
             kdtree: Kdtree::new(&mut frontier_points),
@@ -159,8 +160,7 @@ impl RoadMap {
                 count -= 1;
             }
 
-
-            let popped = self.frontier.pop();
+            let popped = self.frontier.pop_front();
             if popped.is_none() {
                 break;
             }
@@ -182,11 +182,9 @@ impl RoadMap {
             if !did_merge {
                 let branch = road.take_fuel();
                 let mut proposed = self.propose_with_global_goals(&road, branch);
-                self.frontier.append(&mut proposed);
-
-                // profiling shows that this has a negligible effect
-                // and it looks pretty
-                thread_rng().shuffle(&mut self.frontier);
+                for r in proposed.drain(..) {
+                  self.frontier.push_back(r);
+                }
             }
 
             // add self to world

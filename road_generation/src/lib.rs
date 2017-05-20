@@ -11,6 +11,7 @@ pub mod config;
 mod rules;
 
 use kdtree::kdtree::Kdtree;
+use std::collections::VecDeque;
 pub use config::Config;
 
 #[derive(Debug)]
@@ -24,7 +25,7 @@ pub enum RoadError {
 pub struct RoadMap {
     kdtree: Kdtree<Point>,
     roads: Vec<Road>,
-    frontier: Vec<Road>,
+    frontier: VecDeque<Road>,
 
     config: config::Config,
 }
