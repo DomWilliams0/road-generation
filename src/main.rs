@@ -198,8 +198,7 @@ const RENDER_COUNT: u32 = 10;
 
 fn render_to_image() -> Result<(), RoadError> {
 
-    fs::remove_dir_all(RENDER_DIR)
-        .or(Err(RoadError::Unknown("Deleting old renders")))?;
+    let _ = fs::remove_dir_all(RENDER_DIR); // ignore error
     fs::DirBuilder::new()
         .create(RENDER_DIR)
         .or(Err(RoadError::Unknown("Render directory creation")))?;
