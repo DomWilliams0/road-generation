@@ -1,17 +1,28 @@
 extern crate road_generation;
 extern crate sfml;
 
+#[macro_use]
+extern crate lazy_static;
+
 use std::process;
 use std::env;
 use std::fs;
 use std::path;
-use road_generation::{RoadType, RoadError, RoadMap, Config};
+use road_generation::{RoadError, RoadMap, Config};
 
 use sfml::system::*;
 use sfml::window::{ContextSettings, VideoMode, Event, style, Key};
 use sfml::graphics::*;
 
 const CONFIG_PATH: &'static str = "config.toml";
+
+lazy_static! {
+static ref ROAD_RENDERING: [(Color, u32); 3] = [
+(Color::rgb(0, 0, 255), 1), // small
+(Color::rgb(0, 0, 0), 3), // medium
+(Color::rgb(255, 0, 0), 5), // large
+];
+}
 
 enum Action {
     GenerateOnly,
@@ -158,10 +169,6 @@ fn render_roadmap(target: &mut RenderTarget, roadmap: &RoadMap) {
     let background_colour: Color = Color::rgb(240, 240, 255);
     let vertex_colour: Color = Color::rgba(70, 200, 150, 150);
 
-    let road_colour_large: Color = Color::rgb(255, 0, 0);
-    let road_colour_med: Color = Color::rgb(0, 0, 0);
-    let road_colour_small: Color = Color::rgb(0, 0, 255);
-
     // cache this
     let width = roadmap.width() as f64;
     let height = roadmap.height() as f64;
@@ -187,15 +194,10 @@ fn render_roadmap(target: &mut RenderTarget, roadmap: &RoadMap) {
                 // target.draw(&circle);
             }
 
+            let (colour, _thickness) = ROAD_RENDERING[road.road_type() as usize];
 
-            let road_colour = match road.road_type() {
-                RoadType::Large => road_colour_large,
-                RoadType::Medium => road_colour_med,
-                RoadType::Small => road_colour_small,
-            };
-
-            let line = [Vertex::with_pos_color(vec(from.x(), from.y()), road_colour),
-                        Vertex::with_pos_color(vec(to.x(), to.y()), road_colour)];
+            let line = [Vertex::with_pos_color(vec(from.x(), from.y()), colour),
+                        Vertex::with_pos_color(vec(to.x(), to.y()), colour)];
 
             target.draw_primitives(&line, PrimitiveType::Lines, RenderStates::default());
         }

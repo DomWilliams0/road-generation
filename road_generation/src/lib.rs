@@ -46,7 +46,7 @@ pub struct Road {
 
 #[derive(Debug, Copy, Clone)]
 pub enum RoadType {
-    Small,
+    Small = 0,
     Medium,
     Large,
 }

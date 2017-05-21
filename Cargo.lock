@@ -2,6 +2,7 @@
 name = "road_renderer"
 version = "0.1.0"
 dependencies = [
+ "lazy_static 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "road_generation 0.1.0",
  "sfml 0.12.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -65,6 +66,11 @@ dependencies = [
 [[package]]
 name = "fux_kdtree"
 version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "lazy_static"
+version = "0.2.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -189,6 +195,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum csfml-system-sys 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "8e387e2fb463b825be4b551aa77311fa4d93f18c0074d3a7324933743b57d1c5"
 "checksum csfml-window-sys 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "d28e267fedb2bedb425b7aae485554dfba3ec0ba5dbf649bfaa6742c87d34549"
 "checksum fux_kdtree 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "216bf8256834a87394bf0364f82a92444ee8a00c757630a02a2bf278456f74e7"
+"checksum lazy_static 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)" = "3b37545ab726dd833ec6420aaba8231c5b320814b9029ad585555d2a03e94fbf"
 "checksum libc 0.2.23 (registry+https://github.com/rust-lang/crates.io-index)" = "e7eb6b826bfc1fdea7935d46556250d1799b7fe2d9f7951071f4291710665e3e"
 "checksum num-traits 0.1.37 (registry+https://github.com/rust-lang/crates.io-index)" = "e1cbfa3781f3fe73dc05321bed52a06d2d491eaa764c52335cf4399f046ece99"
 "checksum quote 0.3.15 (registry+https://github.com/rust-lang/crates.io-index)" = "7a6e920b65c65f10b2ae65c831a81a073a89edd28c7cce89475bff467ab4167a"
