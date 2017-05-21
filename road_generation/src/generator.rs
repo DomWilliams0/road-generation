@@ -183,7 +183,7 @@ impl RoadMap {
                 let branch = road.take_fuel();
                 let mut proposed = self.propose_with_global_goals(&road, branch);
                 for r in proposed.drain(..) {
-                  self.frontier.push_back(r);
+                    self.frontier.push_back(r);
                 }
             }
 

@@ -2,6 +2,7 @@ use {Road, RoadType, Point};
 use cgmath::{Point2, Angle, Rad};
 use cgmath::prelude::*;
 use config;
+use smallvec::SmallVec;
 
 mod grid;
 mod organic;
@@ -13,14 +14,19 @@ enum GenerationRule {
 }
 
 const MAX_PROPOSALS: usize = 3;
-type Proposals = [Option<Proposal>; MAX_PROPOSALS];
+type Proposals = SmallVec<[Proposal; MAX_PROPOSALS]>;
 macro_rules! new_proposals {
   () => {
-    [None; MAX_PROPOSALS];
+      SmallVec::new()
   }
 }
 
-type ProposalGenerator = fn(&Point2<f64>, f64, RoadType, bool, &config::GenerationConfig, &mut Proposals);
+type ProposalGenerator = fn(&Point2<f64>,
+                            f64,
+                            RoadType,
+                            bool,
+                            &config::GenerationConfig,
+                            &mut Proposals);
 
 #[derive(Copy, Clone)]
 pub struct Proposal {
@@ -69,10 +75,7 @@ pub fn propose_roads(config: &config::GenerationConfig,
                     &mut proposals);
     }
 
-    for p in proposals
-            .iter()
-            .take_while(|p| p.is_some())
-            .map(|p| p.unwrap()) {
+    for p in &proposals {
         out.push(p.to_road());
     }
 }

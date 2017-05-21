@@ -1,6 +1,7 @@
 extern crate kdtree;
 extern crate rand;
 extern crate cgmath;
+extern crate smallvec;
 
 #[macro_use]
 extern crate serde_derive;
