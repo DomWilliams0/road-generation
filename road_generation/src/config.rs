@@ -33,6 +33,7 @@ pub struct GenerationConfig {
     pub road_chance: f64,
     pub road_length: f64,
     pub organic_angle: f64,
+    pub child_chance: f64,
 }
 
 impl Config {

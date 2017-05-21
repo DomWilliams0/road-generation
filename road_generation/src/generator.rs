@@ -106,7 +106,7 @@ fn create_frontier(config: &Config) -> Vec<Road> {
                        rng.gen_range(0.0, config.window.height as f64));
     let b = Point::new(a.x() + config.generation(&road_type).road_length, a.y());
 
-    let road = Road::new_with_points(RoadType::Large, a, b);
+    let road = Road::new_with_points(RoadType::Medium, a, b);
     vec.push(road);
 
     vec

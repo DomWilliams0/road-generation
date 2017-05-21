@@ -3,6 +3,7 @@ use cgmath::{Point2, Angle, Rad};
 use cgmath::prelude::*;
 use config;
 use smallvec::SmallVec;
+use rand::{thread_rng, Rng};
 
 mod grid;
 mod organic;
@@ -13,7 +14,7 @@ enum GenerationRule {
     Organic,
 }
 
-const MAX_PROPOSALS: usize = 3;
+const MAX_PROPOSALS: usize = 8;
 type Proposals = SmallVec<[Proposal; MAX_PROPOSALS]>;
 macro_rules! new_proposals {
   () => {
@@ -75,8 +76,21 @@ pub fn propose_roads(config: &config::GenerationConfig,
                     &mut proposals);
     }
 
+    let mut rng = thread_rng();
+    let child_type = get_next_type(road.road_type);
+
     for p in &proposals {
         out.push(p.to_road());
+
+        if let Some(next_type) = child_type {
+            if rng.next_f64() < config.child_chance {
+                let mut p = p.clone();
+                p.angle += 3.14 / 2.;
+                p.road_type = next_type;
+                out.push(p.to_road());
+
+            }
+        }
     }
 }
 
@@ -94,5 +108,13 @@ fn get_generator(rule: &GenerationRule) -> Option<ProposalGenerator> {
         GenerationRule::Grid => Some(grid::propose),
         GenerationRule::Organic => Some(organic::propose),
         // _ => None,
+    }
+}
+
+fn get_next_type(road_type: RoadType) -> Option<RoadType> {
+    match road_type {
+        RoadType::Large => Some(RoadType::Medium),
+        RoadType::Medium => Some(RoadType::Small),
+        _ => None,
     }
 }

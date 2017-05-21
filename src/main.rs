@@ -5,7 +5,7 @@ use std::process;
 use std::env;
 use std::fs;
 use std::path;
-use road_generation::{RoadError, RoadMap, Config};
+use road_generation::{RoadType, RoadError, RoadMap, Config};
 
 use sfml::system::*;
 use sfml::window::{ContextSettings, VideoMode, Event, style, Key};
@@ -157,7 +157,10 @@ fn vec(x: f64, y: f64) -> Vector2f {
 fn render_roadmap(target: &mut RenderTarget, roadmap: &RoadMap) {
     let background_colour: Color = Color::rgb(240, 240, 255);
     let vertex_colour: Color = Color::rgba(70, 200, 150, 150);
-    let road_colour: Color = Color::rgb(20, 40, 60);
+
+    let road_colour_large: Color = Color::rgb(255, 0, 0);
+    let road_colour_med: Color = Color::rgb(0, 0, 0);
+    let road_colour_small: Color = Color::rgb(0, 0, 255);
 
     // cache this
     let width = roadmap.width() as f64;
@@ -181,9 +184,15 @@ fn render_roadmap(target: &mut RenderTarget, roadmap: &RoadMap) {
 
             for point in &[from, to] {
                 circle.set_position(&vec(point.x() - rad, point.y() - rad));
-                target.draw(&circle);
+                // target.draw(&circle);
             }
 
+
+            let road_colour = match road.road_type() {
+                RoadType::Large => road_colour_large,
+                RoadType::Medium => road_colour_med,
+                RoadType::Small => road_colour_small,
+            };
 
             let line = [Vertex::with_pos_color(vec(from.x(), from.y()), road_colour),
                         Vertex::with_pos_color(vec(to.x(), to.y()), road_colour)];
